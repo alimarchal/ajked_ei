@@ -26,6 +26,16 @@
 
 
                         <div class="mt-4">
+                            <x-label for="status" value="{{ __('User Status') }}" />
+                            <select name="status" required id="status" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                <option value="1" @if($user->status == 1) selected @endif>Activated</option>
+                                <option value="0" @if($user->status == 0) selected @endif>Deactivate</option>
+                            </select>
+                        </div>
+
+
+
+                        <div class="mt-4">
                             <label for="permissions" class="block text-gray-700 text-sm font-bold mb-2">Permissions:</label>
                             @foreach(\Spatie\Permission\Models\Permission::all() as $permission)
                                 <div class="flex items-center">

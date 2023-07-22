@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,7 +28,7 @@ class User extends Authenticatable
     // The User model requires this trait
     use HasRoles;
 
-    protected $guard_name = 'web';
+//    protected $guard_name = 'web';
 
     /**
      * The attributes that are mass assignable.
@@ -35,7 +36,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'cnic', 'license_number', 'address', 'mobile_no_one', 'mobile_no_two', 'status',
+        'name', 'email', 'password', 'cnic', 'license_number', 'address', 'mobile_no', 'status',
     ];
 
     /**
@@ -67,4 +68,35 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+    public function scopeStartsBefore(Builder $query, $date): Builder
+    {
+        if (!empty($date)) {
+            $datetime1 = null;
+            $datetime2 = null;
+
+            if (isset($date) && !empty($date)) {
+                $dates = explode(' – ', $date);
+                $fdate = @$dates[0];
+                $tdate = @$dates[1];
+                if (!empty($fdate) && !empty($tdate)) {
+                    $datetime1 = new \DateTime($fdate);
+                    $datetime2 = new \DateTime($tdate);
+                }
+            }
+
+            $date_from = null;
+            $date_to = null;
+
+            if (!empty($date)) {
+                $date_from = $datetime1->format('Y-m-d');
+                $date_to = $datetime2->format('Y-m-d');
+            }
+
+
+        }
+
+        return $query->whereBetween('date', [$date_from, $date_to]);
+    }
 }

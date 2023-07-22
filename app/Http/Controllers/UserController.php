@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
@@ -18,7 +19,9 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::with('roles', 'permissions')->get();
+        $users = QueryBuilder::for(User::with('roles', 'permissions'))
+            ->allowedFilters(['name', 'email', 'mobile_no', 'license_number', 'cnic'])
+            ->get();
         return view('users.index', compact('users'));
     }
 
@@ -72,5 +75,43 @@ class UserController extends Controller
 
         session()->flash('status', 'User has been updated successfully.');
         return to_route('users.edit', compact('user'));
+//        $this->validate($request, [
+//            'name' => 'required|string|max:255',
+//            'email' => 'required|email|unique:users,email,' . $user->id,
+//            'permissions' => 'array',
+//            'permissions.*' => 'exists:permissions,id',
+//        ]);
+//
+//        $user->update($request->all());
+//
+//        // Get the user's current roles
+//        $currentRoles = $user->roles->pluck('name')->toArray();
+//
+//        // Get the roles and permissions from the request
+//        $roles = $request->input('roles', []);
+//        $permissions = $request->input('permissions', []);
+//
+//        // Remove indirect permissions from the user's roles
+//        foreach ($currentRoles as $roleName) {
+//            $role = Role::where('name', $roleName)->first();
+//
+//            foreach ($permissions as $permissionId) {
+//                $permission = Permission::find($permissionId);
+//
+//                // If the role doesn't have the direct permission, revoke the indirect permission
+//                if (!$role->hasPermissionTo($permission)) {
+//                    $role->revokePermissionTo($permission);
+//                }
+//            }
+//        }
+//
+//        // Synchronize the roles and permissions
+//        $user->syncRoles($roles);
+//        $user->syncPermissions($permissions);
+//
+//        session()->flash('status', 'User has been updated successfully.');
+//        return redirect()->route('users.edit', compact('user'));
+
+
     }
 }

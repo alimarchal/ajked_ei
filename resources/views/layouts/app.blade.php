@@ -13,7 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+        @stack('custom_headers')
         <!-- Styles -->
         @livewireStyles
     </head>

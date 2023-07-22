@@ -19,14 +19,16 @@ return new class extends Migration
             $table->string('cnic',15)->nullable()->unique();
             $table->string('license_number')->nullable();
             $table->string('address')->nullable();
-            $table->string('mobile_no_one',11)->nullable();
-            $table->string('mobile_no_two',11)->nullable();
+            $table->string('mobile_no',11)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->boolean('status')->default(1);
+            $table->unsignedBigInteger('domestic_qouta')->default(0);
+            $table->unsignedBigInteger('commercial_qouta')->default(0);
+            $table->unsignedBigInteger('industrial_qouta')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

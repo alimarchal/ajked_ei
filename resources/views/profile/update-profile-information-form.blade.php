@@ -81,6 +81,34 @@
                 @endif
             @endif
         </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="cnic" value="{{ __('CNIC') }}" />
+            <x-input id="cnic" type="text" class="mt-1 block w-full" placeholder="82203-1234567-8" wire:model.defer="state.cnic" autocomplete="cnic" />
+            <x-input-error for="cnic" class="mt-2" />
+        </div>
+
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="mobile_no" value="{{ __('Mobile No') }}" />
+            <x-input id="mobile_no" type="text" class="mt-1 block w-full" wire:model.defer="state.mobile_no" autocomplete="mobile_no" />
+            <x-input-error for="mobile_no" class="mt-2" />
+        </div>
+
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="license_number" value="{{ __('License Number') }}" />
+            <x-input id="license_number" type="text" class="mt-1 block w-full"  wire:model.defer="state.license_number" autocomplete="license_number" />
+            <x-input-error for="license_number" class="mt-2" />
+        </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="address" value="{{ __('Address') }}" />
+            <textarea name="address" id="address" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" wire:model.defer="state.address"></textarea>
+            <x-input-error for="address" class="mt-2" />
+        </div>
+
+
     </x-slot>
 
     <x-slot name="actions">
