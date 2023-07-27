@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('cnic',15)->nullable()->unique();
             $table->string('license_number')->nullable();
+            $table->date('license_number_expiry')->nullable();
             $table->string('address')->nullable();
             $table->string('mobile_no',11)->nullable();
             $table->timestamp('email_verified_at')->nullable();
@@ -26,9 +27,7 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->boolean('status')->default(1);
-            $table->unsignedBigInteger('domestic_qouta')->default(0);
-            $table->unsignedBigInteger('commercial_qouta')->default(0);
-            $table->unsignedBigInteger('industrial_qouta')->default(0);
+            $table->unsignedBigInteger('quota')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

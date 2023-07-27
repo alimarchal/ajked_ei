@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\ChallanController;
+use App\Http\Controllers\ChallanTypeController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LicenseController;
+use App\Http\Controllers\QuotaController;
+use App\Http\Controllers\TestReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +26,8 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     //
     Route::resource('roles',\App\Http\Controllers\RoleController::class);
     Route::resource('permissions',\App\Http\Controllers\PermissionController::class);
@@ -28,6 +36,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::resource('challanType',ChallanTypeController::class);
+    Route::resource('challan',ChallanController::class);
 
+    Route::get('/applications', [ApplicationController::class, 'index'])->name('applications.index');
+
+    Route::resource('quota',QuotaController::class);
+    Route::resource('license',LicenseController::class);
+    Route::resource('testReport',TestReportController::class);
 
 });

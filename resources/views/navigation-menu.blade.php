@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 print:hidden">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -16,8 +16,23 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    <x-nav-link href="{{ route('applications.index') }}" :active="request()->routeIs('applications.*')">
+                        {{ __('Applications') }}
+                    </x-nav-link>
+
+
+
+                    <x-nav-link href="{{ route('testReport.index') }}" :active="request()->routeIs('testReport.*')">
+                        {{ __('Test Reports') }}
+                    </x-nav-link>
+
 
                     @role('Super-Admin')
+
+                    <x-nav-link href="{{ route('challanType.index') }}" :active="request()->routeIs('challanType.*')">
+                        {{ __('Challan Types') }}
+                    </x-nav-link>
+
                     <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
                         {{ __('Users') }}
                     </x-nav-link>

@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('quotas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained();
+            $table->foreignId('challan_id')->nullable()->constrained();
             $table->enum('type',['Credit','Debit']);
             $table->unsignedBigInteger('quantity');
             $table->unsignedBigInteger('outstanding_balance');
+            $table->unsignedInteger('approved_by')->nullable();
+            $table->string('remarks')->nullable();
+            $table->enum('status',['In-Process','Rejected','Approved'])->default('In-Process');
             $table->timestamps();
         });
     }

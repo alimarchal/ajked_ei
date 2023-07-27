@@ -11,7 +11,7 @@ class StoreQuotaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,7 @@ class StoreQuotaRequest extends FormRequest
     {
         return [
             //
+            'challan_receipt_paths' => 'required|file|mimes:jpeg,jpg,png,pdf|max:5120', // 5 MB (5120 KB) limit
         ];
     }
 }
