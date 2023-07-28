@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use DebugBar\DebugBar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -11,7 +11,7 @@ class DashboardController extends Controller
     public function index()
     {
         // get user object
-        $user = \Auth::user();
+        $user = Auth::user();
 
         // dashboard for wiring contractor
         if ($user->hasRole('Wiring Contractor')) {

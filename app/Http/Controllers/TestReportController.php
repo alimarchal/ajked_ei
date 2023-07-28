@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTestReportRequest;
 use App\Http\Requests\UpdateTestReportRequest;
 use App\Models\LoadDetail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 // Import the DB facade
@@ -17,7 +18,7 @@ class TestReportController extends Controller
      */
     public function index()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         $test_reports = TestReport::with('phase', 'divisionSubDivision')->get();
 
         return view('test-reports.index', compact('test_reports', 'user'));
@@ -28,7 +29,7 @@ class TestReportController extends Controller
      */
     public function create()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         return view('test-reports.create', compact('user'));
     }
@@ -41,7 +42,7 @@ class TestReportController extends Controller
         try {
             DB::beginTransaction(); // Start the database transaction
 
-            $user = \Auth::user();
+            $user = Auth::user();
             $request->merge(['user_id' => $user->id]);
             $request->merge(['date' => now()->format('Y-m-d')]);
 
@@ -198,7 +199,7 @@ class TestReportController extends Controller
      */
     public function show(TestReport $testReport)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         return view('test-reports.show', compact('testReport', 'user'));
 
