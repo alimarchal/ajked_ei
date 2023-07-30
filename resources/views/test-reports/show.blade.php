@@ -1,4 +1,24 @@
 <x-app-layout>
+    @push('custom_headers')
+        <style>
+            /* Define watermark styles for print */
+            @media print {
+                /* Add the "Not Verified" text on top of the page */
+                body::before {
+                    content: "[NOT VALID FOR 3-PHASE NOC UNTIL VERIFIED BY ELECTRIC INSPECTOR]";
+                    position: absolute;
+                    bottom: 50%;
+                    left: 50%;
+                    transform: translate(-50%, 50%) rotate(-45deg);
+                    font-size: 20px; /* Change the font size as needed */
+                    font-weight: bold;
+                    color: black; /* Change the text color as needed */
+                    white-space: nowrap; /* Prevent the text from wrapping to the next line */
+                    padding: 20px; /* Optional: add some padding to the watermark */
+                }
+            }
+        </style>
+    @endpush
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight inline-block">
             {{ __('Test Reports') }}
@@ -6,6 +26,9 @@
 
 
         <div class="flex justify-center items-center float-right">
+            <a href="{{ route('testReport.index') }}" class=" text-center px-4 py-2 text-white bg-red-500 border rounded-lg focus:outline-none hover:bg-green-900 transition-colors duration-200 transform dark:text-black dark:border-red-200 dark:hover:bg-green-900 dark:bg-gray-700 ml-2" title="Back">
+                Back
+            </a>
             <button onclick="window.print()" class=" text-center px-4 py-2 text-gray-600 bg-white border rounded-lg focus:outline-none hover:bg-gray-100 transition-colors duration-200 transform dark:text-black dark:border-gray-200 dark:hover:bg-white dark:bg-gray-700 ml-2" title="Members List">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
@@ -18,7 +41,7 @@
 
     <div class="py-0">
         <div class="max-w-7xl mx-auto ">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden ">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden content">
 
 
                 <div class="grid grid-cols-3 gap-4">
@@ -118,9 +141,6 @@
 
 
                 <h2 class="text-lg font-extrabold mt-1.5 mb-1.5 text-center">Load Detail</h2>
-                {{--                <hr class="border-1 border-black">--}}
-
-
                 <table class="w-full text-sm border-collapse border border-slate-400 text-left text-black dark:text-gray-400">
                     <thead class="text-black bg-gray-50 dark:bg-gray-700" style="font-size: 12px;">
                     <tr>
@@ -190,8 +210,6 @@
 
 
                 <h2 class="text-lg font-extrabold mt-1.5 mb-1.5 text-center">Test Results</h2>
-                {{--                <hr class="border-1 border-black">--}}
-
 
                 <table class="w-full text-sm border-collapse border border-slate-400 text-left text-black dark:text-gray-400">
                     <thead class="text-black bg-gray-50 dark:bg-gray-700" style="font-size: 12px;">
@@ -263,6 +281,32 @@
 
                     </div>
                 </div>
+
+
+                @foreach($testReport->reviews as $rw)
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="mt-2 text-justify p-2" style="border: 1px solid black;font-size: 12px;">
+                        <span class="font-extrabold text-sm">
+                            Test Report Verified By {{ $rw->user->name }}  ---
+                            Designation:  {{ Spatie\Permission\Models\Role::findByName($rw->user->getRoleNames()[0],'web')->name }} ---
+                            Sub Division: {{ $rw->divisionSubDivision->sub_division_name }}
+                        </span>
+                            <br>
+                            <span class="font-extrabold text-sm">
+                            UID: {{ $rw->user->id }}-Created-{{ $rw->created_at }}
+                        </span>
+                            <br>
+                            <span class="font-extrabold text-sm">
+                                Description: {{ $rw->remarks }}
+                        </span>
+                            <div class="text-center font-extrabold  text-sm">
+                                {{ Spatie\Permission\Models\Role::findByName($rw->user->getRoleNames()[0],'web')->name }} Findings: {{ $rw->status }}
+                            </div>
+                        </div>
+
+
+                    </div>
+                @endforeach
 
 
             </div>

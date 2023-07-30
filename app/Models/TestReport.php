@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TestReport extends Model
 {
@@ -30,7 +31,10 @@ class TestReport extends Model
         'wc_verified',
         'sdo_verified',
         'xen_verified',
-        'dei_aei_verified',
+        'sdo_xen_status',
+        'dei_verified',
+        'aei_verified',
+        'dei_aei_status',
         'ei_verified',
         'noc_issued',
     ];
@@ -66,4 +70,16 @@ class TestReport extends Model
     {
         return $this->hasMany(LoadDetail::class);
     }
+
+    public function testReportSubmit(): HasMany
+    {
+        return $this->hasMany(TestReportSubmit::class);
+    }
+
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
 }

@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTestReportRequest;
 use App\Http\Requests\UpdateTestReportRequest;
 use App\Models\LoadDetail;
+use App\Models\TestReportSubmit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 // Import the DB facade
 use App\Models\TestReport;
+use Spatie\Permission\Models\Role;
 
 class TestReportController extends Controller
 {
@@ -19,9 +22,32 @@ class TestReportController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $test_reports = TestReport::with('phase', 'divisionSubDivision')->get();
 
-        return view('test-reports.index', compact('test_reports', 'user'));
+        if ($user->hasRole('Wiring Contractor')) {
+            $test_reports = TestReport::with('phase', 'divisionSubDivision')->where('user_id', $user->id)->get();
+            return view('test-reports.index', compact('test_reports', 'user'));
+
+        } elseif ($user->hasRole(['SDO', 'X-En'])) {
+            $role_id = Role::findByName($user->getRoleNames()[0], 'web')->id;
+            $test_reports = TestReport::with('phase', 'divisionSubDivision', 'testReportSubmit', 'reviews')->where('division_sub_division_id', $user->division_sub_division_id)->get();
+            return view('test-reports.index', compact('test_reports', 'user', 'role_id'));
+
+
+        } elseif ($user->hasRole(['DEI', 'AEI'])) {
+            $role_id = Role::findByName($user->getRoleNames()[0], 'web')->id;
+            $test_reports = TestReport::with('phase', 'divisionSubDivision')->get();
+            return view('test-reports.index', compact('test_reports', 'user', 'role_id'));
+
+        } elseif ($user->hasRole(['Electric Inspector'])) {
+
+            $test_reports = TestReport::with('phase', 'divisionSubDivision')->get();
+            return view('test-reports.index', compact('test_reports', 'user'));
+
+        } else {
+            $test_reports = TestReport::with('phase', 'divisionSubDivision')->get();
+            return view('test-reports.index', compact('test_reports', 'user'));
+        }
+
     }
 
     /**
@@ -111,9 +137,17 @@ class TestReportController extends Controller
                     LoadDetail::create($loadDetailData);
                 }
 
+                $test_report_submit = TestReportSubmit::create([
+                    'user_id' => $user->id,
+                    'test_report_id' => $test_report->id,
+                    'division_sub_division_id' => $request->division_sub_division_id,
+                    'phase_id' => $request->phase_id,
+                    'submit_by_role' => 1,
+                    'submit_to_role' => 4,
+                ]);
+
             } elseif ($request->phase_id == 2) {
                 // Code for phase_id == 2
-
 
                 $test_report = TestReport::create([
                     'user_id' => $request->user_id,
@@ -179,6 +213,42 @@ class TestReportController extends Controller
                 }
 
 
+                $test_report_submit_sdo = TestReportSubmit::create([
+                    'user_id' => $user->id,
+                    'test_report_id' => $test_report->id,
+                    'division_sub_division_id' => $request->division_sub_division_id,
+                    'phase_id' => $request->phase_id,
+                    'submit_by_role' => 1,
+                    'submit_to_role' => 4,
+                ]);
+
+                $test_report_submit_xen = TestReportSubmit::create([
+                    'user_id' => $user->id,
+                    'test_report_id' => $test_report->id,
+                    'division_sub_division_id' => $request->division_sub_division_id,
+                    'phase_id' => $request->phase_id,
+                    'submit_by_role' => 1,
+                    'submit_to_role' => 5,
+                ]);
+
+                $test_report_submit_dei = TestReportSubmit::create([
+                    'user_id' => $user->id,
+                    'test_report_id' => $test_report->id,
+                    'division_sub_division_id' => $request->division_sub_division_id,
+                    'phase_id' => $request->phase_id,
+                    'submit_by_role' => 1,
+                    'submit_to_role' => 2,
+                ]);
+
+                $test_report_submit_aei = TestReportSubmit::create([
+                    'user_id' => $user->id,
+                    'test_report_id' => $test_report->id,
+                    'division_sub_division_id' => $request->division_sub_division_id,
+                    'phase_id' => $request->phase_id,
+                    'submit_by_role' => 1,
+                    'submit_to_role' => 3,
+                ]);
+
             }
 
             DB::commit(); // Commit the transaction if everything is successful
@@ -202,6 +272,14 @@ class TestReportController extends Controller
         $user = Auth::user();
 
         return view('test-reports.show', compact('testReport', 'user'));
+
+    }
+
+    public function review_create(Request $request, TestReport $testReport)
+    {
+        $user = Auth::user();
+
+        return view('reviews.create', compact('user', 'testReport'));
 
     }
 

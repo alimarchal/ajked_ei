@@ -6,6 +6,7 @@ use App\Http\Requests\StoreChallanRequest;
 use App\Http\Requests\UpdateChallanRequest;
 use App\Models\Challan;
 use App\Models\ChallanType;
+use Illuminate\Support\Facades\Auth;
 use TNkemdilim\MoneyToWords\Converter;
 use TNkemdilim\MoneyToWords\Languages as Language;
 
@@ -27,7 +28,8 @@ class ChallanController extends Controller
      */
     public function create()
     {
-        return view('challans.create');
+        $user = Auth::user();
+        return view('challans.create',compact('user'));
     }
 
     /**
@@ -35,7 +37,7 @@ class ChallanController extends Controller
      */
     public function store(StoreChallanRequest $request)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         $challan_type = ChallanType::find($request->challan_type_id);
 
         $challan = Challan::create([

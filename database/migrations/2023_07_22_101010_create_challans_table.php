@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->decimal('amount', 10, 2)->nullable();
             $table->enum('status', ['Paid', 'Unpaid', 'Canceled'])->default('Unpaid');
             $table->string('challan_receipt_path', 2048)->nullable();
+            $table->unsignedInteger('report_id')->nullable();
             $table->unsignedInteger('verified_by_user_id')->nullable();
             $table->timestamps();
         });

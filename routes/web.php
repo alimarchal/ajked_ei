@@ -6,6 +6,7 @@ use App\Http\Controllers\ChallanTypeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LicenseController;
 use App\Http\Controllers\QuotaController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TestReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -44,5 +45,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('quota',QuotaController::class);
     Route::resource('license',LicenseController::class);
     Route::resource('testReport',TestReportController::class);
+    Route::get('testReport/{testReport}/review/create',[TestReportController::class,'review_create'])->name('testReport.review.create');
+    Route::resource('review',ReviewController::class);
 
 });

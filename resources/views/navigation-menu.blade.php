@@ -16,15 +16,23 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
+                    @role('Wiring Contractor')
                     <x-nav-link href="{{ route('applications.index') }}" :active="request()->routeIs('applications.*')">
                         {{ __('Applications') }}
                     </x-nav-link>
+                    @endrole
 
 
 
                     <x-nav-link href="{{ route('testReport.index') }}" :active="request()->routeIs('testReport.*')">
                         {{ __('Test Reports') }}
                     </x-nav-link>
+
+                    @role('DEI|AEI')
+                    <x-nav-link href="{{ route('challan.index') }}" :active="request()->routeIs('challan.*')">
+                        {{ __('Challan Generate') }}
+                    </x-nav-link>
+                    @endrole
 
 
                     @role('Super-Admin')

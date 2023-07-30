@@ -6,6 +6,7 @@ use App\Http\Requests\StoreQuotaRequest;
 use App\Http\Requests\UpdateQuotaRequest;
 use App\Models\Challan;
 use App\Models\Quota;
+use Illuminate\Support\Facades\Auth;
 
 class QuotaController extends Controller
 {
@@ -15,7 +16,7 @@ class QuotaController extends Controller
     public function index()
     {
         // get user object
-        $user = \Auth::user();
+        $user = Auth::user();
 
         $quotas = Quota::where('user_id', $user->id)->get();
         return view('quotas.index', compact('quotas'));
@@ -26,7 +27,7 @@ class QuotaController extends Controller
      */
     public function create()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         return view('quotas.create', compact('user'));
     }
 
@@ -35,7 +36,7 @@ class QuotaController extends Controller
      */
     public function store(StoreQuotaRequest $request)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         // Check if the user has already used this challan_id
         $existingQuota = Quota::where('user_id', $user->id)
