@@ -11,7 +11,6 @@ use TNkemdilim\MoneyToWords\Converter;
 use TNkemdilim\MoneyToWords\Languages as Language;
 
 
-
 class ChallanController extends Controller
 {
     /**
@@ -29,7 +28,7 @@ class ChallanController extends Controller
     public function create()
     {
         $user = Auth::user();
-        return view('challans.create',compact('user'));
+        return view('challans.create', compact('user'));
     }
 
     /**
@@ -38,13 +37,26 @@ class ChallanController extends Controller
     public function store(StoreChallanRequest $request)
     {
         $user = Auth::user();
+
         $challan_type = ChallanType::find($request->challan_type_id);
 
-        $challan = Challan::create([
-           'user_id' => $user->id,
-           'challan_type_id' => $challan_type->id,
-           'amount' => $challan_type->amount,
-        ]);
+
+        if ($user->hasRole(['DEI', 'AEI'])) {
+            $challan = Challan::create([
+                'user_id' => $user->id,
+                'challan_type_id' => $challan_type->id,
+                'amount' => $request->amount,
+                'test_report_id' => $request->test_report_id,
+            ]);
+
+        } else {
+            $challan = Challan::create([
+                'user_id' => $user->id,
+                'challan_type_id' => $challan_type->id,
+                'amount' => $challan_type->amount,
+            ]);
+
+        }
 
         session()->flash('status', 'Challan has been generated successfully.');
 
@@ -59,11 +71,9 @@ class ChallanController extends Controller
         $converter = new Converter("rupees", "paisa");
         $amount_in_words = $converter->convert($challan->amount);
 
-        $converter = new Converter("روپے", "پیسے", Language::URDU);
-        $amount_in_words_urdu = $converter->convert($challan->amount);
 
 
-        return view('challans.print', compact('challan','amount_in_words','amount_in_words_urdu'));
+        return view('challans.print', compact('challan', 'amount_in_words'));
     }
 
     /**

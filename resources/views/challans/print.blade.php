@@ -67,8 +67,6 @@
                                 <br>
                                 <br>
                                 <br>
-                                <br>
-                                <br>
                             </td>
                         </tr>
 
@@ -76,13 +74,7 @@
                         <tr>
                             <td class="p-2" colspan="2">{{ ucwords($amount_in_words) }}</td>
                         </tr>
-                        <tr style="direction: rtl;">
-                            <td class="p-2" colspan="2" style="font-weight: bold; ">
-                                رقم در الفاظ :
-                                {{ $amount_in_words_urdu }}
 
-                            </td>
-                        </tr>
 
                         <tr>
                             <td class="p-2">Total:</td>
@@ -128,8 +120,6 @@
                                 <br>
                                 <br>
                                 <br>
-                                <br>
-                                <br>
                             </td>
                         </tr>
 
@@ -137,13 +127,7 @@
                         <tr>
                             <td class="p-2" colspan="2">{{ ucwords($amount_in_words) }}</td>
                         </tr>
-                        <tr style="direction: rtl;">
-                            <td class="p-2" colspan="2" style="font-weight: bold; ">
-                                رقم در الفاظ :
-                                {{ $amount_in_words_urdu }}
 
-                            </td>
-                        </tr>
 
                         <tr>
                             <td class="p-2">Total:</td>
@@ -189,8 +173,6 @@
                                 <br>
                                 <br>
                                 <br>
-                                <br>
-                                <br>
                             </td>
                         </tr>
 
@@ -198,13 +180,7 @@
                         <tr>
                             <td class="p-2" colspan="2">{{ ucwords($amount_in_words) }}</td>
                         </tr>
-                        <tr style="direction: rtl;">
-                            <td class="p-2" colspan="2" style="font-weight: bold; ">
-                                رقم در الفاظ :
-                                {{ $amount_in_words_urdu }}
 
-                            </td>
-                        </tr>
 
                         <tr>
                             <td class="p-2">Total:</td>
@@ -250,21 +226,12 @@
                                 <br>
                                 <br>
                                 <br>
-                                <br>
-                                <br>
                             </td>
                         </tr>
 
 
                         <tr>
                             <td class="p-2" colspan="2">{{ ucwords($amount_in_words) }}</td>
-                        </tr>
-                        <tr style="direction: rtl;">
-                            <td class="p-2" colspan="2" style="font-weight: bold; ">
-                                رقم در الفاظ :
-                                {{ $amount_in_words_urdu }}
-
-                            </td>
                         </tr>
 
                         <tr>

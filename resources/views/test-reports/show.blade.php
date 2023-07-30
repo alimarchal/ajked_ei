@@ -285,24 +285,60 @@
 
                 @foreach($testReport->reviews as $rw)
                     <div class="grid grid-cols-1 gap-4">
-                        <div class="mt-2 text-justify p-2" style="border: 1px solid black;font-size: 12px;">
+
+                        @if(Spatie\Permission\Models\Role::findByName($rw->user->getRoleNames()[0], 'web')->name == "DEI" || Spatie\Permission\Models\Role::findByName($rw->user->getRoleNames()[0], 'web')->name == "AEI")
+                            <div class="mt-2 text-justify p-2" style="border: 1px solid black;font-size: 12px;">
                         <span class="font-extrabold text-sm">
                             Test Report Verified By {{ $rw->user->name }}  ---
                             Designation:  {{ Spatie\Permission\Models\Role::findByName($rw->user->getRoleNames()[0],'web')->name }} ---
                             Sub Division: {{ $rw->divisionSubDivision->sub_division_name }}
                         </span>
-                            <br>
-                            <span class="font-extrabold text-sm">
+                                <br>
+                                <span class="font-extrabold text-sm">
                             UID: {{ $rw->user->id }}-Created-{{ $rw->created_at }}
                         </span>
-                            <br>
-                            <span class="font-extrabold text-sm">
+                                <br>
+
+                                @if($rw->status == "Objection" )
+                                    <span class="font-extrabold text-sm">
+                                        Details: {{ $rw->remarks }}
+                                    </span>
+                                @else
+                                    <span class="font-extrabold text-sm">
+                                     I have conducted a site visit and reviewed the corresponding test report. Based on load, consumer submitted a fee of
+                                        Rs.{{ $rw->testReport->challan->amount }} via Challan No: {{ $rw->testReport->challan_id }} ,  Dated: {{ \Carbon\Carbon::parse($rw->testReport->challan->date)->format('d-M-Y') }}. Based on my assessment, I recommend granting a No Objection Certificate (NOC) for this connection.
+                                    </span>
+                                @endif
+
+                                <div class="text-center font-extrabold  text-sm">
+                                    {{ Spatie\Permission\Models\Role::findByName($rw->user->getRoleNames()[0],'web')->name }} Findings: {{ $rw->status }}
+                                </div>
+                            </div>
+
+
+
+
+                        @else
+                            <div class="mt-2 text-justify p-2" style="border: 1px solid black;font-size: 12px;">
+                        <span class="font-extrabold text-sm">
+                            Test Report Verified By {{ $rw->user->name }}  ---
+                            Designation:  {{ Spatie\Permission\Models\Role::findByName($rw->user->getRoleNames()[0],'web')->name }} ---
+                            Sub Division: {{ $rw->divisionSubDivision->sub_division_name }}
+                        </span>
+                                <br>
+                                <span class="font-extrabold text-sm">
+                            UID: {{ $rw->user->id }}-Created-{{ $rw->created_at }}
+                        </span>
+                                <br>
+                                <span class="font-extrabold text-sm">
                                 Description: {{ $rw->remarks }}
                         </span>
-                            <div class="text-center font-extrabold  text-sm">
-                                {{ Spatie\Permission\Models\Role::findByName($rw->user->getRoleNames()[0],'web')->name }} Findings: {{ $rw->status }}
+                                <div class="text-center font-extrabold  text-sm">
+                                    {{ Spatie\Permission\Models\Role::findByName($rw->user->getRoleNames()[0],'web')->name }} Findings: {{ $rw->status }}
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
 
 
                     </div>

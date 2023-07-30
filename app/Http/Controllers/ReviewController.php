@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
+use App\Models\Challan;
 use App\Models\Review;
 use App\Models\TestReport;
 use App\Models\TestReportSubmit;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 
 class ReviewController extends Controller
@@ -47,7 +49,7 @@ class ReviewController extends Controller
         }
 
         if ($user->hasRole(['SDO', 'X-En'])) {
-            $test_report_submits = TestReportSubmit::where('test_report_id', $test_report->id)->orwhere('submit_to_role', 4)->orWhere('submit_to_role', 5)->get();
+            $test_report_submits = TestReportSubmit::where('test_report_id', $test_report->id)->whereIn('submit_to_role', [4,5])->get();
             foreach ($test_report_submits as $trs) {
                 $trs->remarks = 1;
                 $trs->save();
@@ -69,12 +71,24 @@ class ReviewController extends Controller
             return redirect()->route('testReport.index')->with('success', 'Your review has been submitted successfully no need further action.');
         } elseif ($user->hasRole(['AEI', 'DEI'])) {
 
-            $test_report_submits = TestReportSubmit::where('test_report_id', $test_report->id)->orwhere('submit_to_role', 2)->orWhere('submit_to_role', 3)->get();
+
+
+            $test_report_submits = TestReportSubmit::where('test_report_id', $test_report->id)->whereIn('submit_to_role', [2,3])->get();
+
 
             foreach ($test_report_submits as $trs) {
                 $trs->remarks = 1;
                 $trs->save();
             }
+
+            // find challan and update it
+
+            $challan = Challan::find($request->challan_id);
+            $challan->amount = $request->amount;
+            $challan->status = 'Paid';
+            $challan->date = $request->date;
+            $challan->test_report_id = $request->test_report_id;
+            $challan->save();
 
             $review_obj = Review::create([
                 'user_id' => $user->id,
@@ -84,6 +98,8 @@ class ReviewController extends Controller
                 'status' => $status,
             ]);
 
+
+            $test_report->challan_id = $request->challan_id;
             $test_report->dei_verified = 1;
             $test_report->aei_verified = 1;
             $test_report->dei_aei_status = $status;

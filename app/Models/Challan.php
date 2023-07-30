@@ -8,16 +8,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Challan extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
         'challan_type_id',
         'amount',
         'status',
         'challan_receipt_path',
+        'test_report_id',
+        'date',
         'verified_by_user_id',
     ];
+
+    use HasFactory;
 
     public function user(): BelongsTo
     {

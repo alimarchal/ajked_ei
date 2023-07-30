@@ -326,16 +326,53 @@
 
                         <form method="POST" action="{{ route('review.store') }}">
                             @csrf
+                            <div class="grid grid-cols-4 gap-4">
+                                <input type="hidden" name="test_report_id" value="{{ $testReport->id }}">
+                                <div class="mt-4">
+                                    <x-label for="remarks" value="{{ __('Please select Approve / Objection') }}"/>
+                                    <select name="remarks" id="remarks" required
+                                            class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                        <option value="">Select Approve / Objection.</option>
+                                        <option value="1">Approve</option>
+                                        <option value="0">Objection</option>
 
-                            <input type="hidden" name="test_report_id" value="{{ $testReport->id }}">
-                            <div class="mt-4">
-                                <x-label for="remarks" value="{{ __('Please select Approve / Objection') }}"/>
-                                <select name="remarks" id="remarks" required class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                                    <option value="">Select Approve / Objection.</option>
-                                    <option value="1">Approve</option>
-                                    <option value="0">Objection</option>
+                                    </select>
+                                </div>
 
-                                </select>
+                                <div class="mt-4">
+                                    <x-label for="amount" value="{{ __('Rs.') }}"/>
+                                    <input type="number" id="amount" name="amount"
+                                           class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+
+                                </div>
+
+                                <div class="mt-4">
+                                    <x-label for="challan_id" value="{{ __('System Challan No') }}"/>
+
+                                    <select name="challan_id" id="challan_id" required class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+
+                                        @php
+                                            $challan_report = App\Models\Challan::where('status','Unpaid')->where('user_id', $user->id)->get();
+                                        @endphp
+
+
+                                        @if($challan_report->isEmpty())
+                                            <option value="">Please generate challan first</option>
+                                        @else
+                                            @foreach($challan_report as $ch)
+                                                <option value="{{$ch->id}}">Challan No: {{ $ch->id }} -- Report ID: {{ $ch->test_report_id }} </option>
+                                            @endforeach
+                                        @endif
+
+
+                                    </select>
+
+                                </div>
+
+                                <div class="mt-4">
+                                    <x-label for="date" value="{{ __('Dated') }}"/>
+                                    <input type="date" id="date" name="date" max="{{ date('Y-m-d') }}" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                </div>
                             </div>
 
                             <div class="mt-4">

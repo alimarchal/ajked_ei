@@ -31,4 +31,5 @@ class Review extends Model
     {
         return $this->belongsTo(TestReport::class);
     }
+
 }

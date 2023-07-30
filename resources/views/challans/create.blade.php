@@ -16,7 +16,7 @@
 
                         <div>
                             <x-label for="name" value="{{ __('Challan For') }}" />
-                            <select name="challan_type_id" required id="challan_type_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <select name="challan_type_id" autofocus required id="challan_type_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                                 <option value="">None</option>
 
                                 @role('DEI|AEI')
@@ -35,8 +35,14 @@
 
                         @role('DEI|AEI')
                         <div class="mt-4">
-                            <x-label for="report_id" value="{{ __('Test Report No') }}" />
-                            <input type="text" name="report_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <x-label for="test_report_id" value="{{ __('Test Report No') }}" />
+                            <input type="text" id="test_report_id" name="test_report_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+
+                        </div>
+
+                        <div class="mt-4">
+                            <x-label for="amount" value="{{ __('Amount') }}" />
+                            <input type="number" min="0" id="amount" name="amount" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
 
                         </div>
                         @endrole
