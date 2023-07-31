@@ -37,8 +37,10 @@ return new class extends Migration {
             $table->boolean('wc_verified')->default(0);
             $table->boolean('sdo_verified')->default(0);
             $table->boolean('xen_verified')->default(0);
+            $table->enum('sdo_xen_status',['Approved','Objection'])->nullable();
             $table->boolean('dei_verified')->default(0);
             $table->boolean('aei_verified')->default(0);
+            $table->enum('dei_aei_status',['Approved','Objection'])->nullable();
             $table->boolean('ei_verified')->default(0);
             $table->boolean('noc_issued')->default(0);
             // 1 for single phase work done

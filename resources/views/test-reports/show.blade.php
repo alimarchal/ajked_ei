@@ -2,6 +2,7 @@
     @push('custom_headers')
         <style>
             /* Define watermark styles for print */
+            @if($testReport->noc_issued != 1)
             @media print {
                 /* Add the "Not Verified" text on top of the page */
                 body::before {
@@ -17,6 +18,7 @@
                     padding: 20px; /* Optional: add some padding to the watermark */
                 }
             }
+            @endif
         </style>
     @endpush
     <x-slot name="header">

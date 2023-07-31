@@ -321,9 +321,7 @@
 
 
                     @role('DEI|AEI')
-
                     @if($testReport->dei_verified == 0 || $testReport->aei_verified == 0)
-
                         <form method="POST" action="{{ route('review.store') }}">
                             @csrf
                             <div class="grid grid-cols-4 gap-4">
@@ -389,8 +387,44 @@
                             </div>
                         </form>
                     @endif
-
                     @endrole
+
+
+                    @role('Electric Inspector')
+                    @if($testReport->sdo_xen_status == "Approved" && $testReport->dei_aei_status == "Approved"  && $testReport->ei_verified == 0)
+                        <form method="POST" action="{{ route('review.store') }}">
+                            @csrf
+                            <div class="grid grid-cols-1 gap-4">
+                                <input type="hidden" name="test_report_id" value="{{ $testReport->id }}">
+                                <div class="mt-4">
+                                    <x-label for="remarks" value="{{ __('Please select Approve / Objection') }}"/>
+                                    <select name="remarks" id="remarks" required
+                                            class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                        <option value="">Please Select Option.</option>
+                                        <option value="1">Issue NOC</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="mt-4">
+                                <x-label for="details" value="{{ __('Details') }}"/>
+                                <textarea name="details" id="details"
+                                          class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">A No Objection Certificate shall be granted to the aforementioned consumer subject to the following conditions:
+1:</textarea>
+                            </div>
+
+                            <div class="flex items-center justify-end mt-4">
+
+                                <x-button class="ml-4">
+                                    {{ __('Submit') }}
+                                </x-button>
+                            </div>
+                        </form>
+                    @endif
+                    @endrole
+
+
 
                     @endrole
 
