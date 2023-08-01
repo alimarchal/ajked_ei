@@ -29,7 +29,7 @@ return new class extends Migration {
                     (1, NULL, 'Inspection Fee', 1000.00, '2023-07-22 10:32:54', '2023-07-22 10:32:51'),
                     (2, NULL, 'Test Report Fee', 1000.00, '2023-07-22 10:31:42', '2023-07-22 10:31:42'),
                     (3, NULL, 'Renewal License Fee', 1000.00, '2023-07-22 10:32:54', '2023-07-22 10:32:51'),
-                    (4, NULL, 'New Wiring Contractor Quota Fee', 1000.00, '2023-07-22 10:31:42', '2023-07-22 10:31:42');
+                    (4, NULL, 'New Wiring Contractor Quota Fee', 1000.00, '2023-07-22 10:31:42', '2023-07-22 10:31:42'),
                     (5, NULL, 'Challan For No Objection Certificate (NOC)', 0.00, '2023-07-22 10:31:42', '2023-07-22 10:31:42');
                 ";
 

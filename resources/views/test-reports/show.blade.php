@@ -2,11 +2,28 @@
     @push('custom_headers')
         <style>
             /* Define watermark styles for print */
-            @if($testReport->noc_issued != 1)
+            @if($testReport->phase_id == 2 && $testReport->noc_issued == 0)
             @media print {
                 /* Add the "Not Verified" text on top of the page */
                 body::before {
                     content: "[NOT VALID FOR 3-PHASE NOC UNTIL VERIFIED BY ELECTRIC INSPECTOR]";
+                    position: absolute;
+                    bottom: 50%;
+                    left: 50%;
+                    transform: translate(-50%, 50%) rotate(-45deg);
+                    font-size: 20px; /* Change the font size as needed */
+                    font-weight: bold;
+                    color: black; /* Change the text color as needed */
+                    white-space: nowrap; /* Prevent the text from wrapping to the next line */
+                    padding: 20px; /* Optional: add some padding to the watermark */
+                }
+            }
+
+            @elseif($testReport->phase_id == 1)
+            @media print {
+                /* Add the "Not Verified" text on top of the page */
+                body::before {
+                    content: "[Only for Single Phase Report]";
                     position: absolute;
                     bottom: 50%;
                     left: 50%;
