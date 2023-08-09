@@ -38,8 +38,14 @@
                             </th>
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Type
+                            </th>
+
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
                                 Amount
                             </th>
+
                         </tr>
                         </thead>
                         <tbody>
@@ -54,11 +60,13 @@
                                     {{ $challan_type->user->name }}
                                 </th>
 
-
-                                <th class="border px-2 py-2 border-black font-medium text-center text-black dark:text-white">
+                                <th class="border px-2 py-2 border-black font-medium text-left text-black dark:text-white">
                                     {{ $challan_type->name }}
                                 </th>
 
+                                <th class="border px-2 py-2 border-black font-medium text-center text-black dark:text-white">
+                                    {{ $challan_type->type }}
+                                </th>
 
                                 <th class="border px-2 py-2 border-black font-medium text-center text-black dark:text-white">
                                     {{ number_format($challan_type->amount,2) }}

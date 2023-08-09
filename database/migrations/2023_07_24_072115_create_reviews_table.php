@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('division_sub_division_id')->nullable();
             $table->foreignId('test_report_id')->nullable()->constrained();
             $table->text('remarks')->nullable();
-            $table->enum('status',['Approve','Objection'])->nullable();
+            $table->enum('status',['Approved','Objection'])->nullable();
 
             $table->timestamps();
         });

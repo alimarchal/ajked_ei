@@ -37,6 +37,7 @@ class TestReport extends Model
         'dei_aei_status',
         'ei_verified',
         'noc_issued',
+        'status',
     ];
 
     public function user()

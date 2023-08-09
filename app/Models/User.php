@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -36,7 +37,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'cnic', 'license_number', 'address', 'mobile_no', 'status',
+        'name', 'email', 'password', 'cnic', 'license_number', 'address', 'mobile_no', 'status', 'spc_domestic', 'spc_commercial', 'spc_industrial', 'tpc_domestic', 'tpc_industrial', 'tpc_commercial',
     ];
 
     /**
@@ -98,5 +99,11 @@ class User extends Authenticatable
         }
 
         return $query->whereBetween('date', [$date_from, $date_to]);
+    }
+
+
+    public function divisionSubDivision()
+    {
+        return $this->belongsTo(DivisionSubDivision::class);
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\QuotaController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TestReportController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WiringContractorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,5 +48,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::resource('testReport',TestReportController::class);
     Route::get('testReport/{testReport}/review/create',[TestReportController::class,'review_create'])->name('testReport.review.create');
     Route::resource('review',ReviewController::class);
+    Route::resource('wiringContractor',WiringContractorController::class);
 
 });

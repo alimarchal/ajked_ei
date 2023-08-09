@@ -25,9 +25,20 @@
                                 <select name="division_sub_division_id" required id="division_sub_division_id"
                                         class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                                     <option value="">None</option>
+                                    @role('Wiring Contractor')
+                                        @foreach(\App\Models\DivisionSubDivision::whereIn('id',$division_access)->orderBy('division_code','ASC')->get() as $div_suv_div)
+                                            <option value="{{ $div_suv_div->id }}">{{ $div_suv_div->sub_division_name }}</option>
+                                        @endforeach
+                                    @endrole
+
+
+                                    @role('Super-Admin|Electric Inspector')
                                     @foreach(\App\Models\DivisionSubDivision::orderBy('division_code','ASC')->get() as $div_suv_div)
                                         <option value="{{ $div_suv_div->id }}">{{ $div_suv_div->sub_division_name }}</option>
                                     @endforeach
+                                    @endrole
+
+
                                 </select>
                             </div>
 

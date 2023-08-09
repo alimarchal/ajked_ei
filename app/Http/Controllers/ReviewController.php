@@ -63,14 +63,23 @@ class ReviewController extends Controller
                 'status' => $status,
             ]);
 
-            $test_report->sdo_verified = 1;
-            $test_report->xen_verified = 1;
-            $test_report->sdo_xen_status = $status;
-            $test_report->save();
+
+            if ($status == "Objection") {
+                $test_report->sdo_verified = 1;
+                $test_report->xen_verified = 1;
+                $test_report->sdo_xen_status = $status;
+                $test_report->status = 'Objection';
+                $test_report->save();
+            } else {
+                $test_report->sdo_verified = 1;
+                $test_report->xen_verified = 1;
+                $test_report->sdo_xen_status = $status;
+                $test_report->save();
+            }
+
 
             return redirect()->route('testReport.index')->with('success', 'Your review has been submitted successfully no need further action.');
-        }
-        elseif ($user->hasRole(['AEI', 'DEI'])) {
+        } elseif ($user->hasRole(['AEI', 'DEI'])) {
 
             $test_report_submits = TestReportSubmit::where('test_report_id', $test_report->id)->whereIn('submit_to_role', [2, 3])->get();
 
@@ -105,21 +114,30 @@ class ReviewController extends Controller
                 'submit_to_role' => 6,
             ]);
 
-            $test_report->challan_id = $request->challan_id;
-            $test_report->dei_verified = 1;
-            $test_report->aei_verified = 1;
-            $test_report->dei_aei_status = $status;
-            $test_report->save();
 
-
+            if ($status == "Objection") {
+                $test_report->challan_id = $request->challan_id;
+                $test_report->dei_verified = 1;
+                $test_report->aei_verified = 1;
+                $test_report->dei_aei_status = $status;
+                $test_report->status = "Objection";
+                $test_report->save();
+            } else {
+                $test_report->challan_id = $request->challan_id;
+                $test_report->dei_verified = 1;
+                $test_report->aei_verified = 1;
+                $test_report->dei_aei_status = $status;
+                $test_report->save();
+            }
 
 
             return redirect()->route('testReport.index')->with('success', 'Your review has been submitted successfully no need further action.');
 
-        }
-        elseif ($user->hasRole(['Electric Inspector'])) {
+        } elseif ($user->hasRole(['Electric Inspector'])) {
+
 
             $test_report_submits = TestReportSubmit::where('test_report_id', $test_report->id)->whereIn('submit_to_role', [6])->get();
+
 
             foreach ($test_report_submits as $trs) {
                 $trs->remarks = 1;
@@ -135,10 +153,20 @@ class ReviewController extends Controller
             ]);
 
 
-            $test_report->ei_verified = 1;
-            $test_report->noc_issued = 1;
-            $test_report->status = 1;
-            $test_report->save();
+            if ($request->remarks == 0) {
+
+                $test_report->ei_verified = 1;
+                $test_report->noc_issued = 1;
+                $test_report->status = "Objection";
+                $test_report->save();
+                //
+            } elseif ($request->remarks == 1) {
+                $test_report->ei_verified = 1;
+                $test_report->noc_issued = 1;
+                $test_report->status = "Approved";
+                $test_report->save();
+            }
+
 
             return redirect()->route('testReport.index')->with('success', 'Your review has been submitted successfully no need further action.');
 

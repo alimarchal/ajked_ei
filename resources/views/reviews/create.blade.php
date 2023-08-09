@@ -391,7 +391,7 @@
 
 
                     @role('Electric Inspector')
-                    @if($testReport->sdo_xen_status == "Approved" && $testReport->dei_aei_status == "Approved"  && $testReport->ei_verified == 0)
+                    @if(($testReport->sdo_xen_status == "Approved" || $testReport->sdo_xen_status == "Objection") && ($testReport->dei_aei_status == "Approved" || $testReport->dei_aei_status == "Objection") && $testReport->ei_verified == 0)
                         <form method="POST" action="{{ route('review.store') }}">
                             @csrf
                             <div class="grid grid-cols-1 gap-4">
@@ -402,6 +402,7 @@
                                             class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                                         <option value="">Please Select Option.</option>
                                         <option value="1">Issue NOC</option>
+                                        <option value="0">Objection</option>
                                     </select>
                                 </div>
 

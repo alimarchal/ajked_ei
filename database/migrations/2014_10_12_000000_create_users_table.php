@@ -27,7 +27,16 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->boolean('status')->default(1);
+
             $table->unsignedBigInteger('quota')->default(0);
+
+            $table->unsignedBigInteger('spc_domestic')->default(0);
+            $table->unsignedBigInteger('spc_commercial')->default(0);
+            $table->unsignedBigInteger('spc_industrial')->default(0);
+            $table->unsignedBigInteger('tpc_domestic')->default(0);
+            $table->unsignedBigInteger('tpc_commercial')->default(0);
+            $table->unsignedBigInteger('tpc_industrial')->default(0);
+
             $table->softDeletes();
             $table->timestamps();
         });

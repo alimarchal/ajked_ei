@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('challan_id')->nullable()->constrained();
+
+            $table->foreignId('phase_id')->nullable()->constrained();
+            $table->foreignId('phase_type_id')->nullable()->constrained();
+
             $table->enum('type',['Credit','Debit']);
             $table->unsignedBigInteger('quantity');
             $table->unsignedBigInteger('outstanding_balance');

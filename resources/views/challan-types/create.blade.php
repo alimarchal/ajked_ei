@@ -20,6 +20,12 @@
                         </div>
 
                         <div class="mt-4">
+                            <x-label for="type" value="{{ __('Type') }}" />
+                            <x-input id="type" class="block mt-1 w-full" type="text" name="type" :value="old('type')" required autofocus autocomplete="name" />
+                        </div>
+
+
+                        <div class="mt-4">
                             <x-label for="amount" value="{{ __('Amount') }}" />
                             <x-input id="amount" class="block mt-1 w-full" type="number" step="1" min="0" name="amount" :value="old('amount')" required autocomplete="amount" />
                         </div>

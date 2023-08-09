@@ -61,6 +61,8 @@ class QuotaController extends Controller
 
         $quota = Quota::create([
             'user_id' => $user->id,
+            'phase_id' => $request->phase_id,
+            'phase_type_id' => $request->phase_type_id,
             'challan_id' => $request->challan_id,
             'type' => 'Credit',
             'quantity' => $request->quantity,

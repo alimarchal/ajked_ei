@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->nullable()->constrained();
             $table->string('name')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
+            $table->string('type')->nullable();
             $table->enum('status', ['Active','In-Active'])->default('Active');
             $table->timestamps();
         });
@@ -25,12 +26,12 @@ return new class extends Migration {
 
         DB::transaction(function () {
             $query = "
-                    INSERT INTO `challan_types` (`id`, `user_id`, `name`, `amount`, `created_at`, `updated_at`) VALUES
-                    (1, NULL, 'Inspection Fee', 1000.00, '2023-07-22 10:32:54', '2023-07-22 10:32:51'),
-                    (2, NULL, 'Test Report Fee', 1000.00, '2023-07-22 10:31:42', '2023-07-22 10:31:42'),
-                    (3, NULL, 'Renewal License Fee', 1000.00, '2023-07-22 10:32:54', '2023-07-22 10:32:51'),
-                    (4, NULL, 'New Wiring Contractor Quota Fee', 1000.00, '2023-07-22 10:31:42', '2023-07-22 10:31:42'),
-                    (5, NULL, 'Challan For No Objection Certificate (NOC)', 0.00, '2023-07-22 10:31:42', '2023-07-22 10:31:42');
+                INSERT INTO `challan_types` (`id`, `user_id`, `name`, `amount`, `type`, `status`, `created_at`, `updated_at`) VALUES
+                (1, NULL, 'Inspection Fee', 1000.00, 'Inspection', 'Active', '2023-07-22 05:32:54', '2023-07-22 05:32:51'),
+                (2, NULL, 'Test Report Fee', 1000.00, 'Test Report', 'Active', '2023-07-22 05:31:42', '2023-07-22 05:31:42'),
+                (3, NULL, 'Renewal License Fee', 1000.00, 'License', 'Active', '2023-07-22 05:32:54', '2023-07-22 05:32:51'),
+                (4, NULL, 'New Wiring Contractor Quota Fee', 1000.00, 'Quota', 'Active', '2023-07-22 05:31:42', '2023-07-22 05:31:42'),
+                (5, NULL, 'Challan For No Objection Certificate (NOC)', 0.00, 'NOC', 'Active', '2023-07-22 05:31:42', '2023-07-22 05:31:42');
                 ";
 
             DB::statement($query);

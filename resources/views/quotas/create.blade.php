@@ -5,21 +5,23 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-6">
+        <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="p-6 lg:p-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700">
+                <div class="p-3 lg:p-4 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700">
                     <!-- resources/views/users/create.blade.php -->
                     <x-validation-errors class="mb-4" />
                     <form method="POST" action="{{ route('quota.store') }}" enctype="multipart/form-data">
                         @csrf
 
-                        <div class="mt-4">
+                        <div class="mt-4 mb-4">
                             <x-label for="challan_id" value="{{ __('Please select your challan.') }}" />
                             <select name="challan_id" id="challan_id" required class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" >
                                 @php
-                                    $challans = \App\Models\Challan::where('challan_type_id',4)->where('user_id',$user->id)->where('status','Unpaid')->whereNull('challan_receipt_path')->get();
+                                    $challan_type_ids = \App\Models\ChallanType::where('type','Quota')->pluck('id');
+                                    $challans = \App\Models\Challan::whereIn('challan_type_id',$challan_type_ids)->where('user_id',$user->id)->where('status','Unpaid')->whereNull('challan_receipt_path')->get();
                                 @endphp
+
                                 @if($challans->isEmpty())
                                     <option value="">Please generate challan first.</option>
                                 @else
@@ -31,9 +33,11 @@
                             </select>
                         </div>
 
+                        <livewire:phase-dropdowns/>
+
                         <div class="mt-4">
                             <x-label for="quantity" value="{{ __('Quota Quantity') }}" />
-                            <x-input id="quantity" class="block mt-1 w-full" type="text" name="quantity" min="0" required :value="old('quantity')" required autofocus autocomplete="quantity" />
+                            <x-input id="quantity" max="200" class="block mt-1 w-full" type="number" name="quantity" min="0" required :value="old('quantity')" required autofocus autocomplete="quantity" />
                         </div>
 
                         <div class="mt-4">

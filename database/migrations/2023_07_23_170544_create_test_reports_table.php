@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('test_reports', function (Blueprint $table) {
-            $table->id();
+            $table->id()->startingValue(10001);
             // test report initiated
             $table->foreignId('user_id')->nullable()->constrained();
             $table->foreignId('challan_id')->nullable()->constrained();
@@ -44,7 +44,9 @@ return new class extends Migration {
             $table->boolean('ei_verified')->default(0);
             $table->boolean('noc_issued')->default(0);
             // 1 for single phase work done
-            $table->unsignedInteger('status')->nullable();
+//            $table->unsignedInteger('status')->nullable();
+
+            $table->enum('status',['Approved','Objection','In-Process'])->nullable();
 
             $table->timestamps();
         });

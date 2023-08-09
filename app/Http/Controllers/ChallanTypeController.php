@@ -67,6 +67,7 @@ class ChallanTypeController extends Controller
         $challanType->update([
             'name' => $request->input('name'),
             'amount' => $request->input('amount'),
+            'type' => $request->input('type'),
             'user_id' => auth()->user()->id,
             // Add other fields as needed
         ]);

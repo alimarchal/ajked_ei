@@ -26,7 +26,7 @@
                                 @endrole
 
                                 @role('Wiring Contractor')
-                                @foreach(\App\Models\ChallanType::all() as $ct)
+                                @foreach(\App\Models\ChallanType::whereIn('type',['Inspection','Test Report','License','Quota'])->get() as $ct)
                                     <option value="{{ $ct->id }}">{{ $ct->name }} - Rs.{{ number_format($ct->amount,0) }}</option>
                                 @endforeach
                                 @endrole

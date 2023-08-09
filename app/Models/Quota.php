@@ -13,6 +13,8 @@ class Quota extends Model
     protected $fillable = [
         'user_id',
         'challan_id',
+        'phase_id',
+        'phase_type_id',
         'type',
         'quantity',
         'outstanding_balance',

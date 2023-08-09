@@ -14,6 +14,7 @@ class ChallanType extends Model
         'user_id',
         'name',
         'amount',
+        'type',
     ];
 
     public function user(): BelongsTo
