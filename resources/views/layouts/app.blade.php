@@ -37,7 +37,7 @@
                 <x-status-message class="mb-4" />
                 @if(!request()->routeIs('testReport.*'))
 
-                    <x-validation-errors class="mb-4" />
+{{--                    <x-validation-errors class="mb-4" />--}}
                 @endif
                 {{ $slot }}
             </main>

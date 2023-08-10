@@ -59,8 +59,18 @@ class DashboardController extends Controller
 
 
         } elseif ($user->hasRole(['Electric Inspector'])) {
+            $noc_issued = TestReport::where('noc_issued', 1)->where('status', 'Approved')->count();
+            $submit_to_electric_inspector = TestReport::where('dei_verified', 1)->where('aei_verified', 1)->where('ei_verified', 0)->where('phase_id', 2)->count();
+            $noc_objection = TestReport::where('status', 'Objection')->count();
+
+            return view('dashboard', compact('user', 'noc_issued','submit_to_electric_inspector','noc_objection'));
 
         } else {
+            $noc_issued = TestReport::where('noc_issued', 1)->where('status', 'Approved')->count();
+            $submit_to_electric_inspector = TestReport::where('dei_verified', 1)->where('aei_verified', 1)->where('ei_verified', 0)->where('phase_id', 2)->count();
+            $noc_objection = TestReport::where('status', 'Objection')->count();
+
+            return view('dashboard', compact('user', 'noc_issued','submit_to_electric_inspector','noc_objection'));
 
         }
 

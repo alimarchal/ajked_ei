@@ -75,7 +75,55 @@
                     </div>
 
 
-{{--                    <div>--}}
+                    <div>
+                        <x-label for="status" value="{{ __('User Status') }}" />
+                        <select name="filter[status]" id="status" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <option value="" selected>None</option>
+                            <option value="1">Activated</option>
+                            <option value="0">Deactivate</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <x-label for="division_name" value="{{ __('Division') }}" />
+                        <select name="filter[division_sub_divisions.division_name]" id="division_name" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <option value="" selected>None</option>
+                            <!-- Populate options dynamically from your divisions_sub_divisions table -->
+                            @foreach (\App\Models\DivisionSubDivision::groupBy('division_name')->get() as $divisionSubDivision)
+                                <option value="{{ $divisionSubDivision->division_name }}">{{ $divisionSubDivision->division_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <x-label for="sub_division_name" value="{{ __('Sub-Division') }}" />
+                        <select name="filter[division_sub_divisions.sub_division_name]" id="sub_division_name" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <option value="" selected>None</option>
+                            <!-- Populate options dynamically from your divisions_sub_divisions table -->
+                            @foreach (\App\Models\DivisionSubDivision::groupBy('sub_division_name')->get() as $divisionSubDivision)
+                                <option value="{{ $divisionSubDivision->sub_division_name }}">{{ $divisionSubDivision->division_name }} - {{ $divisionSubDivision->sub_division_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
+                    <div>
+                        <x-label for="circle" value="{{ __('Circle') }}" />
+                        <select name="filter[division_sub_divisions.circle]" id="circle" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <option value="" selected>None</option>
+                            <!-- Populate options dynamically from your divisions_sub_divisions table -->
+                            @foreach (\App\Models\DivisionSubDivision::groupBy('circle')->get() as $divisionSubDivision)
+                                <option value="{{ $divisionSubDivision->circle }}">{{ $divisionSubDivision->circle }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
+
+
+
+
+                    {{--                    <div>--}}
 {{--                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="date_range">CNIC</label>--}}
 {{--                        <input readonly name="filter[starts_before]" id="date_range" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">--}}
 {{--                    </div>--}}
@@ -98,11 +146,11 @@
             </form>
         </div>
     </div>
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-3">
+        <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 <div
-                    class="p-6 lg:p-8 bg-white overflow-x-auto dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700">
+                    class="p-0.5 bg-white overflow-x-auto dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700">
                     <!-- resources/views/users/create.blade.php -->
 
 

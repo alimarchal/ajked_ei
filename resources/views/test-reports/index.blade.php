@@ -68,8 +68,7 @@
                     </div>
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="phase_id">Connection
-                            Type</label>
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="phase_id">Connection Type</label>
                         <select name="filter[phase_id]" id="selectedPhase"
                                 class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             <option value="">Select a phase</option>
@@ -82,6 +81,28 @@
                         </select>
                     </div>
 
+
+
+                    <div>
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="phase_id">Status</label>
+                        <select name="filter[status]" id="selectedPhase"
+                                class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <option value="">Select a status</option>
+                            <option value="Approved" {{ request('filter.status') == 'Approved' ? 'selected' : '' }}>
+                                Approved
+                            </option>
+                            <option value="Objection" {{ request('filter.status') == 'Objection' ? 'selected' : '' }}>
+                                Objection
+                            </option>
+
+                            <option value="In-Process" {{ request('filter.status') == 'In-Process' ? 'selected' : '' }}>
+                                In-Process
+                            </option>
+                        </select>
+                    </div>
+
+                    <div></div>
+                    <div></div>
                     <div></div>
 
                     <!-- Add any additional filter fields here if needed -->
@@ -656,6 +677,176 @@
                                 <th class="border px-2 py-2 border-black font-medium text-center text-black dark:text-white @if($test_report->status == "In-Process") bg-yellow-50 @elseif($test_report->status == "Objection") bg-red-400 @else bg-green-300 @endif ">
                                         {{ $test_report->status }}
                                     </th>
+
+                                <th class="border px-2 py-2 border-black font-medium text-center text-black dark:text-white print:hidden">
+                                    <button onclick="redirectToLink('{{ route('testReport.show', $test_report->id) }}')"
+                                            class=" text-center px-4 py-2 text-gray-600 bg-white border rounded-lg focus:outline-none hover:bg-gray-100 transition-colors duration-200 transform dark:text-black dark:border-gray-200 dark:hover:bg-white dark:bg-gray-700 ml-2"
+                                            title="Members List">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                                        </svg>
+                                    </button>
+                                </th>
+
+                        @endforeach
+
+                        </tbody>
+                    </table>
+                    @endrole
+
+                    @role('Super-Admin')
+                    <table class="w-full text-sm border-collapse border border-slate-400 text-left text-black dark:text-gray-400">
+                        <thead class="text-black uppercase bg-gray-50 dark:bg-gray-700 ">
+                        <tr>
+
+                            <th scope="col" class="px-1 py-3 border border-black text-center">
+                                RID
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Date
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Consumer Name
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                CNIC No
+                            </th>
+
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Type
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                SDIV
+                            </th>
+
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                SDO/X-EN
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                DEI/AEI
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                EI
+                            </th>
+
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Status
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center print:hidden">
+                                Print
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+                        @foreach ($test_reports as $test_report)
+                            <tr class="bg-white  border-b dark:bg-gray-800 dark:border-black text-left">
+
+                                <th class="border px-2 py-2  border-black font-medium text-black text-center dark:text-white">
+                                    {{ $test_report->id }}
+                                </th>
+
+                                <th class="border px-2 py-2  border-black font-medium text-black text-center dark:text-white">
+                                    {{ \Carbon\Carbon::parse($test_report->created_at)->format('d-M-Y') }}
+                                </th>
+                                <th class="border px-2 py-2 border-black font-medium text-black dark:text-white">
+                                    {{ $test_report->consumer_name }}
+                                </th>
+
+                                <th class="border px-2 py-2 border-black text-center font-medium text-black dark:text-white">
+                                    {{ $test_report->cnic }}
+                                </th>
+
+                                <th class="border px-2 py-2 border-black  text-centerfont-medium text-center text-black dark:text-white">
+                                    @if($test_report->phase->name == "3 Phase Connection")
+                                        3-Phase
+                                    @else
+                                        Singe-Phase
+                                    @endif
+                                </th>
+
+                                <th class="border px-2 py-2 border-black  text-centerfont-medium text-center text-black dark:text-white">
+                                    {{ $test_report->divisionSubDivision->sub_division_name }}
+                                </th>
+
+
+                                <th class="border px-2 py-2 border-black  text-centerfont-medium text-center text-black dark:text-white">
+                                    @if($test_report->sdo_verified == 0 || $test_report->xen_verified == 0)
+
+                                        @if($test_report->phase_id == 2 )
+                                            Pending
+                                        @else
+                                            Seen
+                                        @endif
+
+
+                                    @else
+                                        {{ $test_report->sdo_xen_status }}
+                                    @endif
+                                </th>
+
+
+                                <th class="border px-2 py-2 border-black  text-centerfont-medium text-center text-black dark:text-white">
+                                    @if($test_report->dei_verified == 0 || $test_report->aei_verified == 0)
+
+                                        @if($test_report->phase_id == 2 )
+                                            Pending
+                                        @else
+                                            Seen
+                                        @endif
+                                    @else
+                                        {{ $test_report->dei_aei_status }}
+                                    @endif
+                                </th>
+
+
+                                <th class="border px-2 py-2 border-black  text-centerfont-medium text-center text-black dark:text-white">
+                                    @if($test_report->sdo_xen_status == "Approved" && $test_report->dei_aei_status == "Approved" && $test_report->ei_verified == 0)
+                                        Pending
+                                    @elseif( $test_report->ei_verified == 1 &&  $test_report->noc_issued == 1)
+                                        @if($test_report->status == "Objection")
+                                            Objection
+                                        @else
+                                            NOC Issued
+                                        @endif
+
+                                    @else
+
+                                        @if($test_report->phase_id == 2 )
+                                            @if(($test_report->sdo_xen_status == "Approved" || $test_report->sdo_xen_status == "Objection") && ($test_report->dei_aei_status == "Approved" || $test_report->dei_aei_status == "Objection") && $test_report->ei_verified == 0)
+                                                Pending
+
+                                            @else
+
+                                                Waiting...
+                                            @endif
+
+
+                                        @else
+                                            Seen
+                                        @endif
+
+                                    @endif
+                                </th>
+
+
+
+                                <th class="border px-2 py-2 border-black font-medium text-center text-black dark:text-white @if($test_report->status == "In-Process") bg-yellow-50 @elseif($test_report->status == "Objection") bg-red-400 @else bg-green-300 @endif ">
+                                    {{ $test_report->status }}
+                                </th>
 
                                 <th class="border px-2 py-2 border-black font-medium text-center text-black dark:text-white print:hidden">
                                     <button onclick="redirectToLink('{{ route('testReport.show', $test_report->id) }}')"

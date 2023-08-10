@@ -104,6 +104,6 @@ class User extends Authenticatable
 
     public function divisionSubDivision()
     {
-        return $this->belongsTo(DivisionSubDivision::class);
+        return $this->belongsTo(DivisionSubDivision::class, 'division_sub_division_id');
     }
 }

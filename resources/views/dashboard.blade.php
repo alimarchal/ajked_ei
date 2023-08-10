@@ -3,7 +3,7 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }} {{ optional($user->roles->first())->name }}
             @role('Wiring Contractor')
-                License Expiry Date:
+                License Expiry Date: {{ Carbon\Carbon::parse($user->license_number_expiry)->format('d-M-Y') }}
             @endrole
         </h2>
     </x-slot>
@@ -237,17 +237,17 @@
             </div>
             @endrole
 
-            @role('Electric Inspector')
+            @role('Electric Inspector|Super-Admin')
             <div class="grid grid-cols-3 gap-6 ">
-                <a href="{{ route('quota.index') }}" class="transform  hover:scale-110 transition duration-300  shadow-xl rounded-lg col-span-12 sm:col-span-12 xl:col-span-1 intro-y bg-white">
+                <a href="{{ route('testReport.index',['filter[status]=Approved&filter[phase_id]=2']) }}" class="transform  hover:scale-110 transition duration-300  shadow-xl rounded-lg col-span-12 sm:col-span-12 xl:col-span-1 intro-y bg-white">
                     <div class="p-5">
                         <div class="grid grid-cols-3 gap-1">
                             <div class="col-span-2">
                                 <div class="text-3xl font-bold leading-8">
-                                    00
+                                    {{ $noc_issued }}
                                 </div>
                                 <div class="mt-1 text-base font-extrabold text-black">
-                                    Test Reports Pending Actions
+                                    Issued NOC
                                 </div>
                             </div>
                             <div class="col-span-1 flex items-center justify-end">
@@ -256,15 +256,15 @@
                         </div>
                     </div>
                 </a>
-                <a href="{{ route('quota.index') }}" class="transform  hover:scale-110 transition duration-300  shadow-xl rounded-lg col-span-12 sm:col-span-12 xl:col-span-1 intro-y bg-white">
+                <a href="{{ route('testReport.index',['filter[dei_verified]=1&filter[aei_verified]=1&filter[status]=In-Process']) }}" class="transform  hover:scale-110 transition duration-300  shadow-xl rounded-lg col-span-12 sm:col-span-12 xl:col-span-1 intro-y bg-white">
                     <div class="p-5">
                         <div class="grid grid-cols-3 gap-1">
                             <div class="col-span-2">
                                 <div class="text-3xl font-bold leading-8">
-                                    00
+                                    {{ $submit_to_electric_inspector }}
                                 </div>
                                 <div class="mt-1 text-base font-extrabold text-black">
-                                    Approved Test Reports (3-P)
+                                    Pending Approval Sub-Offices
                                 </div>
                             </div>
                             <div class="col-span-1 flex items-center justify-end">
@@ -273,15 +273,15 @@
                         </div>
                     </div>
                 </a>
-                <a href="{{ route('quota.index') }}" class="transform  hover:scale-110 transition duration-300  shadow-xl rounded-lg col-span-12 sm:col-span-12 xl:col-span-1 intro-y bg-white">
+                <a href="{{ route('testReport.index',['filter[status]=Objection']) }}" class="transform  hover:scale-110 transition duration-300  shadow-xl rounded-lg col-span-12 sm:col-span-12 xl:col-span-1 intro-y bg-white">
                     <div class="p-5">
                         <div class="grid grid-cols-3 gap-1">
                             <div class="col-span-2">
                                 <div class="text-3xl font-bold leading-8">
-                                    00
+                                    {{ $noc_objection }}
                                 </div>
                                 <div class="mt-1 text-base font-extrabold text-black">
-                                    Objected Test Reports
+                                    Pending Due to Objection
                                 </div>
                             </div>
                             <div class="col-span-1 flex items-center justify-end">
@@ -290,40 +290,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="{{ route('quota.index') }}" class="transform  hover:scale-110 transition duration-300  shadow-xl rounded-lg col-span-12 sm:col-span-12 xl:col-span-1 intro-y bg-white">
-                    <div class="p-5">
-                        <div class="grid grid-cols-3 gap-1">
-                            <div class="col-span-2">
-                                <div class="text-3xl font-bold leading-8">
-                                    00
-                                </div>
-                                <div class="mt-1 text-base font-extrabold text-black">
-                                    Seen Test Reports (1-P)
-                                </div>
-                            </div>
-                            <div class="col-span-1 flex items-center justify-end">
-                                <img src="https://img.icons8.com/?size=128&id=DEiiONGr4Fjl&format=png" alt="employees on leave" class="h-12 w-12">
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <a href="{{ route('quota.index') }}" class="transform  hover:scale-110 transition duration-300  shadow-xl rounded-lg col-span-12 sm:col-span-12 xl:col-span-1 intro-y bg-white">
-                    <div class="p-5">
-                        <div class="grid grid-cols-3 gap-1">
-                            <div class="col-span-2">
-                                <div class="text-3xl font-bold leading-8">
-                                    00
-                                </div>
-                                <div class="mt-1 text-base font-extrabold text-black">
-                                    List of Wiring Contractors
-                                </div>
-                            </div>
-                            <div class="col-span-1 flex items-center justify-end">
-                                <img src="https://img.icons8.com/?size=128&id=DEiiONGr4Fjl&format=png" alt="employees on leave" class="h-12 w-12">
-                            </div>
-                        </div>
-                    </div>
-                </a>
+
             </div>
             @endrole
         </div>

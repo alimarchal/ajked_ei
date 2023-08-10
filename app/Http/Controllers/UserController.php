@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
@@ -14,13 +15,24 @@ class UserController extends Controller
 
     public function __construct()
     {
-        $this->middleware('role:Super-Admin')->only(['create', 'index', 'store', 'edit', 'update']);
+        $this->middleware('role:Super-Admin|Electric Inspector')->only(['create', 'index', 'store', 'edit', 'update']);
     }
 
     public function index()
     {
-        $users = QueryBuilder::for(User::with('roles', 'permissions'))
-            ->allowedFilters(['name', 'email', 'mobile_no', 'license_number', 'cnic'])
+        $users = QueryBuilder::for(User::with('roles', 'permissions', 'divisionSubDivision'))
+            ->allowedFilters([
+                'name',
+                'email',
+                'mobile_no',
+                'license_number',
+                'cnic',
+                'status',
+                'division_sub_division_id',
+                AllowedFilter::exact('division_sub_divisions.division_name', 'divisionSubDivision.division_name'),
+                AllowedFilter::exact('division_sub_divisions.sub_division_name', 'divisionSubDivision.sub_division_name'),
+                AllowedFilter::exact('division_sub_divisions.circle', 'divisionSubDivision.circle'),
+            ])
             ->get();
         return view('users.index', compact('users'));
     }
@@ -66,6 +78,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'cnic' => 'required|unique:users,cnic,' . $user->id,
             'permissions' => 'array',
             'permissions.*' => 'exists:permissions,id',
         ]);

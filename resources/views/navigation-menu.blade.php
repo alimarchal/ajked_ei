@@ -22,11 +22,17 @@
                     </x-nav-link>
                     @endrole
 
-
-
                     <x-nav-link href="{{ route('testReport.index') }}" :active="request()->routeIs('testReport.*')">
                         {{ __('Test Reports') }}
                     </x-nav-link>
+
+                    @role('Electric Inspector')
+
+                    <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
+                        {{ __('Users') }}
+                    </x-nav-link>
+
+                    @endrole
 
                     @role('DEI|AEI')
                     <x-nav-link href="{{ route('challan.index') }}" :active="request()->routeIs('challan.*')">

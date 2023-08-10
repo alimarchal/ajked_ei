@@ -26,6 +26,17 @@
 
 
                         <div class="mt-4">
+                            <x-label for="cnic" value="{{ __('CNIC') }}" />
+                            <x-input id="cnic" class="block mt-1 w-full" type="text" name="cnic" :value="$user->cnic" required autofocus autocomplete="cnic"/>
+                        </div>
+
+
+                        <div class="mt-4">
+                            <x-label for="mobile_no" value="{{ __('Mobile No') }}" />
+                            <x-input id="mobile_no" class="block mt-1 w-full" type="text" name="mobile_no" :value="$user->mobile_no" required autofocus autocomplete="mobile_no"/>
+                        </div>
+
+                        <div class="mt-4">
                             <x-label for="status" value="{{ __('User Status') }}" />
                             <select name="status" required id="status" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                                 <option value="1" @if($user->status == 1) selected @endif>Activated</option>
