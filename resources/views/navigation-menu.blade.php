@@ -32,11 +32,19 @@
                         {{ __('Users') }}
                     </x-nav-link>
 
+                    <x-nav-link href="{{ route('quota.index') }}" :active="request()->routeIs('quota.*')">
+                        {{ __('Quota') }}
+                    </x-nav-link>
+
                     @endrole
 
                     @role('DEI|AEI')
                     <x-nav-link href="{{ route('challan.index') }}" :active="request()->routeIs('challan.*')">
                         {{ __('Challan Generate') }}
+                    </x-nav-link>
+
+                    <x-nav-link href="{{ route('quota.index') }}" :active="request()->routeIs('quota.*')">
+                        {{ __('Quota') }}
                     </x-nav-link>
                     @endrole
 

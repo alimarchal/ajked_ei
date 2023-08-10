@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreQuotaRequest;
 use App\Http\Requests\UpdateQuotaRequest;
 use App\Models\Challan;
+use App\Models\DivisionSubDivision;
 use App\Models\Quota;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class QuotaController extends Controller
 {
@@ -18,7 +22,39 @@ class QuotaController extends Controller
         // get user object
         $user = Auth::user();
 
-        $quotas = Quota::where('user_id', $user->id)->get();
+        $query = QueryBuilder::for(Quota::with('user', 'challan', 'phase_type'))
+            ->allowedFilters([
+                AllowedFilter::exact('user_id'),
+                AllowedFilter::exact('challan_id'),
+                AllowedFilter::exact('phase_type_id'),
+                AllowedFilter::exact('type'),
+                AllowedFilter::exact('quantity'),
+                AllowedFilter::exact('outstanding_balance'),
+                AllowedFilter::exact('approved_by'),
+                AllowedFilter::exact('status'),
+            ])->orderBy('created_at', 'desc');
+
+        if ($user->hasRole('Wiring Contractor')) {
+            $quotas = $query->where('user_id', $user->id)->get();
+        } elseif ($user->hasRole(['SDO', 'X-En'])) {
+            $sub_division_id = $user->division_sub_division_id;
+            if (!empty($sub_division_id)) {
+                $sub_division_access = DivisionSubDivision::where('id', $sub_division_id)->pluck('id')->toArray();
+                $quotas = $query->whereIn('division_sub_division_id', $sub_division_access)->get();
+            }
+        } elseif ($user->hasRole(['DEI', 'AEI'])) {
+            $sub_division_id = $user->division_sub_division_id;
+            if (!empty($sub_division_id)) {
+                $circle_access = DivisionSubDivision::where('circle', DivisionSubDivision::find($sub_division_id)->circle)->pluck('id')->toArray();
+                $quotas = $query->whereIn('division_sub_division_id', $circle_access)->get();
+            }
+        } elseif ($user->hasRole(['Electric Inspector'])) {
+            $quotas = $query->get();
+        } else {
+            $quotas = $query->get();
+        }
+
+//        $quotas = Quota::where('user_id', $user->id)->get();
         return view('quotas.index', compact('quotas'));
     }
 
@@ -55,15 +91,24 @@ class QuotaController extends Controller
         }
 
 
-
-
         $request->merge(['challan_receipt_path' => $path]);
+
+        $quantity = 0;
+        if ($request->phase_type_id == 1) {
+            $quantity = 100;
+        } elseif ($request->phase_type_id == 2) {
+            $quantity = 50;
+        } elseif ($request->phase_type_id == 3) {
+            $quantity = 50;
+        }
+
+        $request->merge(['quantity' => $quantity]);
 
         $quota = Quota::create([
             'user_id' => $user->id,
-            'phase_id' => $request->phase_id,
             'phase_type_id' => $request->phase_type_id,
             'challan_id' => $request->challan_id,
+            'division_sub_division_id' => $user->division_sub_division_id,
             'type' => 'Credit',
             'quantity' => $request->quantity,
             'outstanding_balance' => $user->quota,
@@ -83,9 +128,13 @@ class QuotaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Quota $quota)
+    public function show($id)
     {
-        //
+        $quota = Quota::with('challan', 'user', 'phase_type', 'testReport', 'recommendedBy', 'approvedBy', 'divisionSubDivision')->find(decrypt($id));
+        $user = Auth::user();
+//        dd($quota);
+
+        return view('quotas.show', compact('quota', 'user'));
     }
 
     /**
@@ -99,10 +148,52 @@ class QuotaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateQuotaRequest $request, Quota $quota)
+    public function update(UpdateQuotaRequest $request, $id)
     {
-        //
+
+        $quota = Quota::with('challan', 'user', 'phase_type', 'testReport', 'recommendedBy', 'approvedBy', 'divisionSubDivision')->find(decrypt($id));
+        $user = Auth::user();
+        if ($user->hasRole(['DEI', 'AEI'])) {
+            $quota->recommended_by = Auth::user()->id;
+            $quota->recommended_by_remarks = $request->recommended_by_remarks;
+            $quota->save();
+            session()->flash('status', 'Your recommendation has been successfully updated against the Quota request.');
+            return to_route('quota.show', encrypt($quota->id));
+        } elseif ($user->hasRole(['Electric Inspector'])) {
+
+            if ($request->status == "Approved") {
+                $quota->approved_by = Auth::user()->id;
+                $quota->approved_by_remarks = $request->approved_by_remarks;
+                $quota->status = $request->status;
+                $quota->save();
+
+                $get_quota_request_user = User::find($quota->user_id);
+                if ($quota->phase_type_id == 1) {
+                    $get_quota_request_user->domestic = ($get_quota_request_user->domestic + $quota->quantity);
+                    $get_quota_request_user->quota += $quota->quantity;
+                    $get_quota_request_user->save();
+                } elseif ($quota->phase_type_id == 2) {
+                    $get_quota_request_user->commercial = ($get_quota_request_user->commercial + $quota->quantity);
+                    $get_quota_request_user->quota += $quota->quantity;
+                    $get_quota_request_user->save();
+                } elseif ($quota->phase_type_id == 3) {
+                    $get_quota_request_user->industrial = ($get_quota_request_user->industrial + $quota->quantity);
+                    $get_quota_request_user->quota += $quota->quantity;
+                    $get_quota_request_user->save();
+                }
+            } else {
+                $quota->approved_by = Auth::user()->id;
+                $quota->approved_by_remarks = $request->approved_by_remarks;
+                $quota->status = $request->status;
+                $quota->save();
+            }
+
+            session()->flash('status', 'Your recommendation has been successfully updated against the Quota request.');
+            return to_route('quota.show', encrypt($quota->id));
+        }
+
     }
+
 
     /**
      * Remove the specified resource from storage.

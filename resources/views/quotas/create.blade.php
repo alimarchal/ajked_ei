@@ -33,11 +33,13 @@
                             </select>
                         </div>
 
-                        <livewire:phase-dropdowns/>
-
                         <div class="mt-4">
-                            <x-label for="quantity" value="{{ __('Quota Quantity') }}" />
-                            <x-input id="quantity" max="200" class="block mt-1 w-full" type="number" name="quantity" min="0" required :value="old('quantity')" required autofocus autocomplete="quantity" />
+                            <select id="phase_type_id" required name="phase_type_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                <option value="" selected>Please select quota type</option>
+                                        <option value="1">Domestic</option>
+                                        <option value="2">Commercial</option>
+                                        <option value="3">Industrial</option>
+                            </select>
                         </div>
 
                         <div class="mt-4">

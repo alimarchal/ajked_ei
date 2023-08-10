@@ -233,7 +233,7 @@
                                 </th>
 
                                 <th class="border px-2 py-2 border-black font-medium text-center text-black dark:text-white">
-                                    {{ ($user->domestic_qouta + $user->commercial_qouta + $user->industrial_qouta) }}
+                                    {{ ($user->quota) }}
                                 </th>
 
 

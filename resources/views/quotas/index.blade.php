@@ -43,38 +43,40 @@
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="name">Name</label>
-                        <input id="name" type="text" name="filter[name]" value="{{ request('filter.name') }}"
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="user_id">User ID</label>
+                        <input id="user_id" type="text" name="filter[user_id]" value="{{ request('filter.user_id') }}"
                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
                     </div>
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="email">Email</label>
-                        <input id="email" type="text" name="filter[email]" value="{{ request('filter.email') }}"
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="challan_id">Challan ID</label>
+                        <input id="challan_id" type="text" name="filter[challan_id]" value="{{ request('filter.challan_id') }}"
                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
                     </div>
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="mobile_no">Mobile No</label>
-                        <input id="mobile_no" type="text" name="filter[mobile_no]" value="{{ request('filter.mobile_no') }}"
-                               class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="phase_type_id">Phase Type</label>
+                        <select name="filter[phase_type_id]" id="phase_type_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <option value="">Select a phase</option>
+                            <option value="1">Domestic</option>
+                            <option value="2">Commercial</option>
+                            <option value="3">Industrial</option>
+                        </select>
                     </div>
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="license_number">License Number</label>
-                        <input id="license_number" type="text" name="filter[license_number]" value="{{ request('filter.license_number') }}"
-                               class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="type">Type</label>
+                        <select name="filter[type]" id="type" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <option value="">Select a phase</option>
+                            <option value="Credit">Credit</option>
+                            <option value="Debit">Debit</option>
+                        </select>
                     </div>
 
-
-                    <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="cnic">CNIC</label>
-                        <input id="cnic" type="text" name="filter[cnic]" value="{{ request('filter.cnic') }}"
-                               class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
-                    </div>
+                    <div></div>
 
 
                     {{--                    <div>--}}
@@ -113,8 +115,12 @@
                             <th scope="col" class="px-1 py-3 border border-black ">
                                 ID
                             </th>
-                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                            <th scope="col" class="px-1 py-3 border border-black  text-left">
                                 Applied By
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Apply For
                             </th>
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
@@ -130,25 +136,37 @@
                             </th>
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Amount
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
                                 Challan
                             </th>
 
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
-                                Approved By
+                                Test Report ID
                             </th>
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
-                                Remarks
+                                Recommended By
                             </th>
-
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Approved By
+                            </th>
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
                                 Status
                             </th>
 
+
+
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
                                 Applied Date
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Action
                             </th>
                         </tr>
                         </thead>
@@ -161,10 +179,14 @@
                                     {{ $quota->id }}
                                 </td>
 
-                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                <td class="border px-2 py-2  border-black font-medium text-left text-black dark:text-white">
                                     @if(!empty($quota->user))
                                         {{ $quota->user->name }}
                                     @endif
+                                </td>
+
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    {{ $quota->phase_type->type }}
                                 </td>
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
@@ -181,6 +203,10 @@
                                 </td>
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    {{ number_format($quota->challan->amount,2) }}
+                                </td>
+
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
                                     @if(!empty($quota->challan))
                                         <a href="{{ Storage::url($quota->challan->challan_receipt_path) }}" class="text-blue-500 hover:underline" target="_blank">View</a>
                                     @else
@@ -192,14 +218,30 @@
                                     @endif
 
                                 </td>
+
+
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    @if(!empty($quota->approved_by))
-                                        {{ \App\Models\User::find($quota->approved_by)->name }}
+                                    @if(empty($quota->test_report_id))
+                                        N/A
+                                    @else
+                                        {{ $quota->test_report_id }}
                                     @endif
                                 </td>
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    {{ $quota->remarks }}
+                                    @if(!empty($quota->recommended_by))
+                                        {{ \App\Models\User::find($quota->recommended_by)->name }}
+                                    @else
+                                        Pending
+                                    @endif
+                                </td>
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+
+                                    @if(!empty($quota->approved_by))
+                                        {{ \App\Models\User::find($quota->approved_by)->name }}
+                                    @else
+                                        Pending
+                                    @endif
                                 </td>
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
@@ -208,6 +250,25 @@
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
                                     {{ \Carbon\Carbon::parse($quota->created_at)->format('d-m-Y') }}
+                                </td>
+
+
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    @if($quota->status == "Approved")
+                                        <a href="{{ route('quota.show', encrypt($quota->id)) }}" class="inline-flex items-center px-4 py-2 bg-green-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                            Show
+                                        </a>
+                                    @else
+                                        @role('Electric Inspector|DEI|AEI')
+                                            <a href="{{ route('quota.show', encrypt($quota->id)) }}" class="inline-flex items-center px-4 py-2 bg-green-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                                Give Recommendation
+                                            </a>
+                                        @endrole
+                                    @endif
+
+
+
+
                                 </td>
                             </tr>
                         @endforeach

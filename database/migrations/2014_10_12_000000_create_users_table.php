@@ -30,12 +30,9 @@ return new class extends Migration
 
             $table->unsignedBigInteger('quota')->default(0);
 
-            $table->unsignedBigInteger('spc_domestic')->default(0);
-            $table->unsignedBigInteger('spc_commercial')->default(0);
-            $table->unsignedBigInteger('spc_industrial')->default(0);
-            $table->unsignedBigInteger('tpc_domestic')->default(0);
-            $table->unsignedBigInteger('tpc_commercial')->default(0);
-            $table->unsignedBigInteger('tpc_industrial')->default(0);
+            $table->unsignedBigInteger('domestic')->default(0);
+            $table->unsignedBigInteger('commercial')->default(0);
+            $table->unsignedBigInteger('industrial')->default(0);
 
             $table->softDeletes();
             $table->timestamps();

@@ -11,7 +11,7 @@ class UpdateQuotaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,6 +23,7 @@ class UpdateQuotaRequest extends FormRequest
     {
         return [
             //
+//            'recommended_by_remarks' => 'required',
         ];
     }
 }
