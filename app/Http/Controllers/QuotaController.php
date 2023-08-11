@@ -54,7 +54,6 @@ class QuotaController extends Controller
             $quotas = $query->get();
         }
 
-//        $quotas = Quota::where('user_id', $user->id)->get();
         return view('quotas.index', compact('quotas'));
     }
 
@@ -132,8 +131,6 @@ class QuotaController extends Controller
     {
         $quota = Quota::with('challan', 'user', 'phase_type', 'testReport', 'recommendedBy', 'approvedBy', 'divisionSubDivision')->find(decrypt($id));
         $user = Auth::user();
-//        dd($quota);
-
         return view('quotas.show', compact('quota', 'user'));
     }
 

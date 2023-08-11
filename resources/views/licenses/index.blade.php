@@ -8,7 +8,7 @@
     @endpush
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight inline-block">
-            {{ __('Apply For Renewal of License') }}
+            All Licenses Details
         </h2>
 
 
@@ -16,9 +16,9 @@
 
             {{--            @can('create')--}}
             <div class="flex justify-center items-center float-right">
-                <a href="{{ route('license.create') }}"
+                <a href="{{ route('quota.create') }}"
                    class="flex items-center px-4 py-2 text-gray-600 bg-white border rounded-lg focus:outline-none hover:bg-gray-100 transition-colors duration-200 transform dark:text-gray-200 dark:border-gray-200  dark:hover:bg-gray-700 ml-2">
-                    <span class="hidden md:inline-block ml-2">Apply Renewal License</span>
+                    <span class="hidden md:inline-block ml-2">Apply New Quota</span>
                 </a>
             </div>
             {{--            @endcan--}}
@@ -43,38 +43,40 @@
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="name">Name</label>
-                        <input id="name" type="text" name="filter[name]" value="{{ request('filter.name') }}"
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="user_id">User ID</label>
+                        <input id="user_id" type="text" name="filter[user_id]" value="{{ request('filter.user_id') }}"
                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
                     </div>
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="email">Email</label>
-                        <input id="email" type="text" name="filter[email]" value="{{ request('filter.email') }}"
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="challan_id">Challan ID</label>
+                        <input id="challan_id" type="text" name="filter[challan_id]" value="{{ request('filter.challan_id') }}"
                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
                     </div>
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="mobile_no">Mobile No</label>
-                        <input id="mobile_no" type="text" name="filter[mobile_no]" value="{{ request('filter.mobile_no') }}"
-                               class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="phase_type_id">Phase Type</label>
+                        <select name="filter[phase_type_id]" id="phase_type_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <option value="">Select a phase</option>
+                            <option value="1">Domestic</option>
+                            <option value="2">Commercial</option>
+                            <option value="3">Industrial</option>
+                        </select>
                     </div>
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="license_number">License Number</label>
-                        <input id="license_number" type="text" name="filter[license_number]" value="{{ request('filter.license_number') }}"
-                               class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="type">Type</label>
+                        <select name="filter[type]" id="type" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <option value="">Select a phase</option>
+                            <option value="Credit">Credit</option>
+                            <option value="Debit">Debit</option>
+                        </select>
                     </div>
 
-
-                    <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="cnic">CNIC</label>
-                        <input id="cnic" type="text" name="filter[cnic]" value="{{ request('filter.cnic') }}"
-                               class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
-                    </div>
+                    <div></div>
 
 
                     {{--                    <div>--}}
@@ -102,9 +104,8 @@
     </div>
     <div class="py-6">
         <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                <div
-                    class="p-0.5 bg-white overflow-x-auto dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl ">
+                <div class=" bg-white overflow-x-auto dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700">
                     <!-- resources/views/users/create.blade.php -->
 
 
@@ -114,8 +115,17 @@
                             <th scope="col" class="px-1 py-3 border border-black ">
                                 ID
                             </th>
+
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
-                                Applied By
+                                Date
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Name
+                            </th>
+
+                            <th scope="col" class="px-1 py-3 border border-black  text-center">
+                                Challan
                             </th>
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
@@ -130,12 +140,11 @@
                                 Renewal Date
                             </th>
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
-                                Expirty Date
+                                Expiry Date
                             </th>
 
-
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
-                                License Document
+                                RCMD BY
                             </th>
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
@@ -143,74 +152,100 @@
                             </th>
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
-                                Challan Receipt
+                                Status
                             </th>
 
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
-                                Status
+                                Action
                             </th>
                         </tr>
                         </thead>
                         <tbody>
 
 
-                        @foreach ($license as $lic)
+                        @foreach ($licenses as $license)
                             <tr class="bg-white  border-b dark:bg-gray-800 dark:border-black text-left">
                                 <td class="border px-2 py-2  border-black font-medium  text-centertext-black dark:text-white">
-                                    {{ $lic->id }}
+                                    {{ $license->id }}
                                 </td>
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    @if(!empty($lic->user))
-                                        {{ $lic->user->name }}
+                                    {{ \Carbon\Carbon::parse($license->created_at)->format('d-m-Y') }}
+                                </td>
+
+
+                                <td class="border px-2 py-2  border-black font-medium text-left text-black dark:text-white">
+                                    @if(!empty($license->user))
+                                        {{ $license->user->name }}
                                     @endif
                                 </td>
 
-                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    {{ $lic->old_license_number }}
-                                </td>
-
-                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    {{ $lic->new_license_number }}
-                                </td>
-
-                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    {{ \Carbon\Carbon::parse($lic->renewal_date)->format('d-m-Y') }}
-                                </td>
 
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    {{ \Carbon\Carbon::parse($lic->license_expiry)->format('d-m-Y') }}
-                                </td>
-
-
-                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    {{ $lic->license_document }}
-                                </td>
-
-
-                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    {{ $lic->renewed_by }}
-                                </td>
-
-                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-
-                                    @if(!empty($lic->challan))
-                                        <a href="{{ Storage::url($lic->challan->challan_receipt_path) }}" class="text-blue-500 hover:underline" target="_blank">View</a>
+                                    @if(!empty($license->challan))
+                                        <a href="{{ Storage::url($license->challan->challan_receipt_path) }}" class="text-blue-500 hover:underline" target="_blank">View</a>
                                     @else
                                         @if(auth()->user()->hasRole('Wiring Contractor'))
-                                            <a href="{{ route('license.create') }}" class="text-blue-500 hover:underline">Upload</a>
+                                            <a href="{{ route('quota.create') }}" class="text-blue-500 hover:underline">Upload</a>
                                         @else
                                             Not Uploaded
                                         @endif
                                     @endif
+
                                 </td>
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    {{ $lic->status }}
+                                    {{ $license->old_license_number }}
+                                </td>
+
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    {{ $license->user->license_number }}
+                                </td>
+
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    {{ $license->renewal_date }}
                                 </td>
 
 
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    {{ $license->license_expiry }}
+                                </td>
+
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    @if(!empty($license->recommended_by))
+                                        {{ \App\Models\User::find($license->recommended_by)->name }}
+                                    @else
+                                        Pending
+                                    @endif
+
+                                </td>
+
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    @if(!empty($license->renewed_by))
+                                        {{ \App\Models\User::find($license->renewed_by)->name }}
+                                    @else
+                                        Pending
+                                    @endif
+                                </td>
+
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    {{ $license->status }}
+                                </td>
+
+                                <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
+                                    @if($license->status == "Approved")
+                                        <a href="{{ route('license.show', encrypt($license->id)) }}" class="inline-flex items-center px-4 py-2 bg-green-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                            Show
+                                        </a>
+                                    @else
+                                        @role('Electric Inspector|DEI|AEI')
+                                        <a href="{{ route('license.show', encrypt($license->id)) }}" class="inline-flex items-center px-4 py-2 bg-green-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                            Give Recommendation
+                                        </a>
+                                        @endrole
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
 
