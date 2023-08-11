@@ -6,6 +6,8 @@ use App\Http\Requests\StoreTestReportRequest;
 use App\Http\Requests\UpdateTestReportRequest;
 use App\Models\DivisionSubDivision;
 use App\Models\LoadDetail;
+use App\Models\PhaseType;
+use App\Models\Quota;
 use App\Models\TestReportSubmit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,94 +28,6 @@ class TestReportController extends Controller
     {
 
         $user = Auth::user();
-//
-//        if ($user->hasRole('Wiring Contractor')) {
-//            $test_reports = QueryBuilder::for(TestReport::with('phase', 'divisionSubDivision'))
-//                ->allowedFilters(['consumer_name', 'father_husband_name', 'cnic', 'mobile_number', 'phase_id'])
-//                ->where('user_id', $user->id)->orderBy('created_at','DESC')
-//                ->when(request('status') === 'In-Process', function ($query) {
-//                    $query->where('status', 'In-Process');
-//                })
-//                ->orderBy('created_at', 'desc')
-//                ->get();
-//            return view('test-reports.index', compact('test_reports', 'user'));
-//
-//        } elseif ($user->hasRole(['SDO', 'X-En'])) {
-//            // sub division  -- for xen
-//
-//            $role_id = Role::findByName($user->getRoleNames()[0], 'web')->id;
-//            $role_name = Role::findByName($user->getRoleNames()[0], 'web')->name;
-//
-//            $sub_division_access = [];
-//            if ($role_name == "SDO") {
-//                // get division or sub division
-//                $sub_div_id = $user->division_sub_division_id;
-//                if (!empty($sub_div_id)){
-//                    $sub_division_access = DivisionSubDivision::where('id',DivisionSubDivision::find($sub_div_id)->id)->pluck('id')->toArray();
-//                }
-//
-//            } elseif($role_name == "X-En") {
-//                // get division or sub division
-//                $sub_div_id = $user->division_sub_division_id;
-//                if (!empty($sub_div_id)){
-//                    $sub_division_access = DivisionSubDivision::where('division_code',DivisionSubDivision::find($sub_div_id)->division_code)->pluck('id')->toArray();
-//                }
-//            }
-//
-//            $test_reports =  QueryBuilder::for(TestReport::with('phase', 'divisionSubDivision', 'testReportSubmit', 'reviews'))
-//                ->allowedFilters(['consumer_name', 'father_husband_name', 'cnic', 'mobile_number', 'phase_id'])
-//                ->whereIn('division_sub_division_id', $sub_division_access)
-//                ->when(request('status') === 'In-Process', function ($query) {
-//                    $query->where('status', 'In-Process');
-//                })
-//                ->orderBy('created_at', 'desc')
-//                ->get();
-//
-//            return view('test-reports.index', compact('test_reports', 'user', 'role_id'));
-//
-//
-//        } elseif ($user->hasRole(['DEI', 'AEI'])) {
-//
-//            $circle_access = [];
-//            $sub_div_id = $user->division_sub_division_id;
-//            if (!empty($sub_div_id)){
-//                $circle_access = DivisionSubDivision::where('circle',DivisionSubDivision::find($sub_div_id)->circle)->pluck('id')->toArray();
-//            }
-//
-//
-//            $role_id = Role::findByName($user->getRoleNames()[0], 'web')->id;
-//
-//
-//            $test_reports =  QueryBuilder::for(TestReport::with('phase', 'divisionSubDivision', 'testReportSubmit', 'reviews'))
-//                ->allowedFilters(['consumer_name', 'father_husband_name', 'cnic', 'mobile_number', 'phase_id'])
-//                ->whereIn('division_sub_division_id', $circle_access)
-//                ->when(request('status') === 'In-Process', function ($query) {
-//                    $query->where('status', 'In-Process');
-//                })
-//                ->orderBy('created_at', 'desc')
-//                ->get();
-//
-//
-//            return view('test-reports.index', compact('test_reports', 'user', 'role_id'));
-//
-//        } elseif ($user->hasRole(['Electric Inspector'])) {
-//            // all reports ajk all division
-//            $test_reports =  QueryBuilder::for(TestReport::with('phase', 'divisionSubDivision', 'testReportSubmit', 'reviews'))
-//                ->allowedFilters(['consumer_name', 'father_husband_name', 'cnic', 'mobile_number', 'phase_id'])
-//                ->when(request('status') === 'In-Process', function ($query) {
-//                    $query->where('status', 'In-Process');
-//                })
-//                ->orderBy('created_at', 'desc')
-//                ->get();
-//
-//            return view('test-reports.index', compact('test_reports', 'user'));
-//
-//        } else {
-//            $test_reports =  QueryBuilder::for(TestReport::with('phase', 'divisionSubDivision', 'testReportSubmit', 'reviews'))
-//                ->allowedFilters(['consumer_name', 'father_husband_name', 'cnic', 'mobile_number', 'phase_id'])->get();
-//            return view('test-reports.index', compact('test_reports', 'user'));
-//        }
-
         $testReportsQuery = QueryBuilder::for(TestReport::with('phase', 'divisionSubDivision', 'testReportSubmit', 'reviews'))
             ->allowedFilters([
                 AllowedFilter::exact('cnic'),
@@ -178,10 +92,20 @@ class TestReportController extends Controller
      */
     public function store(StoreTestReportRequest $request)
     {
+        $user = Auth::user();
+        $test_report_quota_type = PhaseType::find($request->phase_type_id)->type;
+        if ($test_report_quota_type === "Domestic" && $user->domestic <= 0) {
+            return redirect()->back()->with('error', 'Domestic quota exceeded.');
+        } elseif ($test_report_quota_type === "Commercial" && $user->commercial <= 0) {
+            return redirect()->back()->with('error', 'Commercial quota exceeded.');
+        } elseif ($test_report_quota_type === "Industrial" && $user->industrial <= 0) {
+            return redirect()->back()->with('error', 'Industrial quota exceeded.');
+        }
+
         try {
             DB::beginTransaction(); // Start the database transaction
 
-            $user = Auth::user();
+
             $request->merge(['user_id' => $user->id]);
             $request->merge(['date' => now()->format('Y-m-d')]);
 
@@ -262,6 +186,60 @@ class TestReportController extends Controller
                     'submit_by_role' => 1,
                     'submit_to_role' => 4,
                 ]);
+
+
+
+                if ($test_report_quota_type === "Domestic") {
+                    $user->domestic =  $user->domestic - 1;
+                    $user->quota =  $user->quota - 1;
+                    $user->save();
+
+
+                    $quota = Quota::create([
+                        'user_id' => $user->id,
+                        'phase_type_id' => 1,
+                        'test_report_id' => $test_report->id,
+                        'division_sub_division_id' => $user->division_sub_division_id,
+                        'type' => 'Debit',
+                        'quantity' => 1,
+                        'outstanding_balance' => $user->quota,
+                        'status' => 'Approved',
+                    ]);
+
+                } elseif ($test_report_quota_type === "Commercial") {
+                    $user->commercial =  $user->commercial - 1;
+                    $user->quota =  $user->quota - 1;
+                    $user->save();
+
+
+                    $quota = Quota::create([
+                        'user_id' => $user->id,
+                        'phase_type_id' => 2,
+                        'test_report_id' => $test_report->id,
+                        'division_sub_division_id' => $user->division_sub_division_id,
+                        'type' => 'Debit',
+                        'quantity' => 1,
+                        'outstanding_balance' => $user->quota,
+                        'status' => 'Approved',
+                    ]);
+
+                } elseif ($test_report_quota_type === "Industrial") {
+                    $user->industrial =  $user->industrial - 1;
+                    $user->quota =  $user->quota - 1;
+                    $user->save();
+
+
+                    $quota = Quota::create([
+                        'user_id' => $user->id,
+                        'phase_type_id' => 3,
+                        'test_report_id' => $test_report->id,
+                        'division_sub_division_id' => $user->division_sub_division_id,
+                        'type' => 'Debit',
+                        'quantity' => 1,
+                        'outstanding_balance' => $user->quota,
+                        'status' => 'Approved',
+                    ]);
+                }
 
             } elseif ($request->phase_id == 2) {
                 // Code for phase_id == 2
@@ -366,6 +344,59 @@ class TestReportController extends Controller
                     'submit_by_role' => 1,
                     'submit_to_role' => 3,
                 ]);
+
+
+                if ($test_report_quota_type === "Domestic") {
+                    $user->domestic =  $user->domestic - 1;
+                    $user->quota =  $user->quota - 1;
+                    $user->save();
+
+
+                    $quota = Quota::create([
+                        'user_id' => $user->id,
+                        'phase_type_id' => 1,
+                        'test_report_id' => $test_report->id,
+                        'division_sub_division_id' => $user->division_sub_division_id,
+                        'type' => 'Debit',
+                        'quantity' => 1,
+                        'outstanding_balance' => $user->quota,
+                        'status' => 'Approved',
+                    ]);
+
+                } elseif ($test_report_quota_type === "Commercial") {
+                    $user->commercial =  $user->commercial - 1;
+                    $user->quota =  $user->quota - 1;
+                    $user->save();
+
+
+                    $quota = Quota::create([
+                        'user_id' => $user->id,
+                        'phase_type_id' => 2,
+                        'test_report_id' => $test_report->id,
+                        'division_sub_division_id' => $user->division_sub_division_id,
+                        'type' => 'Debit',
+                        'quantity' => 1,
+                        'outstanding_balance' => $user->quota,
+                        'status' => 'Approved',
+                    ]);
+
+                } elseif ($test_report_quota_type === "Industrial") {
+                    $user->industrial =  $user->industrial - 1;
+                    $user->quota =  $user->quota - 1;
+                    $user->save();
+
+
+                    $quota = Quota::create([
+                        'user_id' => $user->id,
+                        'phase_type_id' => 3,
+                        'test_report_id' => $test_report->id,
+                        'division_sub_division_id' => $user->division_sub_division_id,
+                        'type' => 'Debit',
+                        'quantity' => 1,
+                        'outstanding_balance' => $user->quota,
+                        'status' => 'Approved',
+                    ]);
+                }
 
             }
 

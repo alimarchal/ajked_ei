@@ -43,22 +43,27 @@
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="user_id">User ID</label>
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="user_id">User
+                            ID</label>
                         <input id="user_id" type="text" name="filter[user_id]" value="{{ request('filter.user_id') }}"
                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
                     </div>
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="challan_id">Challan ID</label>
-                        <input id="challan_id" type="text" name="filter[challan_id]" value="{{ request('filter.challan_id') }}"
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="challan_id">Challan
+                            ID</label>
+                        <input id="challan_id" type="text" name="filter[challan_id]"
+                               value="{{ request('filter.challan_id') }}"
                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm mt-1 block w-full">
                     </div>
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="phase_type_id">Phase Type</label>
-                        <select name="filter[phase_type_id]" id="phase_type_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="phase_type_id">Phase
+                            Type</label>
+                        <select name="filter[phase_type_id]" id="phase_type_id"
+                                class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             <option value="">Select a phase</option>
                             <option value="1">Domestic</option>
                             <option value="2">Commercial</option>
@@ -68,8 +73,10 @@
 
 
                     <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="type">Type</label>
-                        <select name="filter[type]" id="type" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300"
+                               for="type">Type</label>
+                        <select name="filter[type]" id="type"
+                                class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             <option value="">Select a phase</option>
                             <option value="Credit">Credit</option>
                             <option value="Debit">Debit</option>
@@ -89,8 +96,8 @@
 
                     <div class="flex items-center justify-between">
                         <button
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                            type="submit">
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                type="submit">
                             Search
                         </button>
                     </div>
@@ -160,7 +167,6 @@
                             </th>
 
 
-
                             <th scope="col" class="px-1 py-3 border border-black  text-center">
                                 Applied Date
                             </th>
@@ -203,17 +209,27 @@
                                 </td>
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
-                                    {{ number_format($quota->challan->amount,2) }}
+                                    @if(!empty($quota->challan))
+
+                                        {{ number_format($quota->challan->amount,2) }}
+                                    @else
+                                        N/A
+                                    @endif
                                 </td>
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
                                     @if(!empty($quota->challan))
-                                        <a href="{{ Storage::url($quota->challan->challan_receipt_path) }}" class="text-blue-500 hover:underline" target="_blank">View</a>
+                                        <a href="{{ Storage::url($quota->challan->challan_receipt_path) }}"
+                                           class="text-blue-500 hover:underline" target="_blank">View</a>
                                     @else
                                         @if(auth()->user()->hasRole('Wiring Contractor'))
                                             <a href="{{ route('quota.create') }}" class="text-blue-500 hover:underline">Upload</a>
                                         @else
-                                            Not Uploaded
+                                            @if($quota->type == "Credit")
+                                                Not Uploaded
+                                            @else
+                                                N/A
+                                            @endif
                                         @endif
                                     @endif
 
@@ -232,7 +248,12 @@
                                     @if(!empty($quota->recommended_by))
                                         {{ \App\Models\User::find($quota->recommended_by)->name }}
                                     @else
-                                        Pending
+                                        @if($quota->type == "Credit")
+                                            Pending
+                                        @else
+                                            N/A
+                                        @endif
+
                                     @endif
                                 </td>
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
@@ -240,7 +261,11 @@
                                     @if(!empty($quota->approved_by))
                                         {{ \App\Models\User::find($quota->approved_by)->name }}
                                     @else
-                                        Pending
+                                        @if($quota->type == "Credit")
+                                            Pending
+                                        @else
+                                            N/A
+                                        @endif
                                     @endif
                                 </td>
 
@@ -255,18 +280,24 @@
 
                                 <td class="border px-2 py-2  border-black font-medium text-center text-black dark:text-white">
                                     @if($quota->status == "Approved")
-                                        <a href="{{ route('quota.show', encrypt($quota->id)) }}" class="inline-flex items-center px-4 py-2 bg-green-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                                            Show
-                                        </a>
+
+                                        @if($quota->type == "Credit")
+                                            <a href="{{ route('quota.show', encrypt($quota->id)) }}"
+                                               class="inline-flex items-center px-4 py-2 bg-green-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                                Show
+                                            </a>
+                                        @else
+                                            N/A
+                                        @endif
+
                                     @else
                                         @role('Electric Inspector|DEI|AEI')
-                                            <a href="{{ route('quota.show', encrypt($quota->id)) }}" class="inline-flex items-center px-4 py-2 bg-green-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                                                Give Recommendation
-                                            </a>
+                                        <a href="{{ route('quota.show', encrypt($quota->id)) }}"
+                                           class="inline-flex items-center px-4 py-2 bg-green-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                            Give Recommendation
+                                        </a>
                                         @endrole
                                     @endif
-
-
 
 
                                 </td>

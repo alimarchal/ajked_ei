@@ -16,7 +16,7 @@
             <option value="" selected>None</option>
             @if(!empty($selectedPhase))
                 @foreach ($phaseTypes as $phaseType)
-                    <option value="{{ $phaseType->id }}">{{ $phaseType->type }}</option>
+                    <option value="{{ $phaseType->id }}">{{ $phaseType->type }} - @if($phaseType->type == "Domestic") {{ Auth::user()->domestic }} @elseif($phaseType->type == "Commercial") {{ Auth::user()->commercial }} @elseif($phaseType->type == "Industrial") {{ Auth::user()->industrial }} @endif </option>
                 @endforeach
             @endif
         </select>

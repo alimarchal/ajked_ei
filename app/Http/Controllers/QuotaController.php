@@ -161,6 +161,7 @@ class QuotaController extends Controller
             if ($request->status == "Approved") {
                 $quota->approved_by = Auth::user()->id;
                 $quota->approved_by_remarks = $request->approved_by_remarks;
+                $quota->outstanding_balance = ($quota->user->quota + $quota->quantity);
                 $quota->status = $request->status;
                 $quota->save();
 

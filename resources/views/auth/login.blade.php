@@ -3,6 +3,8 @@
         <x-slot name="logo">
             <x-authentication-card-logo />
         </x-slot>
+        <h1 class="text-lg text-center font-bold">Inspectorate of Electricity</h1>
+
 
         <x-validation-errors class="mb-4" />
 
