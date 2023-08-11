@@ -24,12 +24,26 @@
                             <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
                         </div>
 
+
+
                         <div class="mt-4">
                             <x-label for="role" value="{{ __('Role') }}" />
                             <select name="role" id="role"  class="block mt-1 w-full" >
                                 <option value="">Select a role</option>
                                 @foreach ($roles as $id => $name)
                                     <option value="{{ $id }}" {{ old('role') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
+
+                        <div class="mt-4">
+                            <x-label for="division_sub_division_id" value="{{ __('Division / Sub Division') }}" />
+                            <select name="division_sub_division_id" id="division_sub_division_id"  class="block mt-1 w-full" >
+                                <option value="">Please Select Division / Sub Division</option>
+                                @foreach (\App\Models\DivisionSubDivision::all() as $div)
+                                    <option value="{{ $div->id }}">{{ $div->division_name }} - {{ $div->sub_division_name }} - {{ $div->circle }}</option>
                                 @endforeach
                             </select>
                         </div>

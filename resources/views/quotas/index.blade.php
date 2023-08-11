@@ -14,14 +14,14 @@
 
         <div class="flex justify-center items-center float-right">
 
-            {{--            @can('create')--}}
+            @role('Wiring Contractor')
             <div class="flex justify-center items-center float-right">
                 <a href="{{ route('quota.create') }}"
                    class="flex items-center px-4 py-2 text-gray-600 bg-white border rounded-lg focus:outline-none hover:bg-gray-100 transition-colors duration-200 transform dark:text-gray-200 dark:border-gray-200  dark:hover:bg-gray-700 ml-2">
                     <span class="hidden md:inline-block ml-2">Apply New Quota</span>
                 </a>
             </div>
-            {{--            @endcan--}}
+            @endrole
 
             <a href="javascript:;" id="toggle"
                class="flex items-center px-4 py-2 text-gray-600 bg-white border rounded-lg focus:outline-none hover:bg-gray-100 transition-colors duration-200 transform dark:text-gray-200 dark:border-gray-200  dark:hover:bg-gray-700 ml-2"

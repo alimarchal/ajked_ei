@@ -36,6 +36,10 @@
                         {{ __('Quota') }}
                     </x-nav-link>
 
+                    <x-nav-link href="{{ route('license.index') }}" :active="request()->routeIs('license.*')">
+                        {{ __('License') }}
+                    </x-nav-link>
+
                     @endrole
 
                     @role('DEI|AEI')
@@ -46,6 +50,10 @@
                     <x-nav-link href="{{ route('quota.index') }}" :active="request()->routeIs('quota.*')">
                         {{ __('Quota') }}
                     </x-nav-link>
+
+                    <x-nav-link href="{{ route('license.index') }}" :active="request()->routeIs('license.*')">
+                        {{ __('License') }}
+                    </x-nav-link>
                     @endrole
 
 
@@ -54,6 +62,16 @@
                     <x-nav-link href="{{ route('challanType.index') }}" :active="request()->routeIs('challanType.*')">
                         {{ __('Challan Types') }}
                     </x-nav-link>
+
+
+                    <x-nav-link href="{{ route('quota.index') }}" :active="request()->routeIs('quota.*')">
+                        {{ __('Quota') }}
+                    </x-nav-link>
+
+                    <x-nav-link href="{{ route('license.index') }}" :active="request()->routeIs('license.*')">
+                        {{ __('License') }}
+                    </x-nav-link>
+
 
                     <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
                         {{ __('Users') }}

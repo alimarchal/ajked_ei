@@ -49,6 +49,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'division_sub_division_id' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|exists:roles,id',
@@ -57,6 +58,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'division_sub_division_id' => $request->division_sub_division_id,
             'password' => Hash::make($request->password),
         ]);
 

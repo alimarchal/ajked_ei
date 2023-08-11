@@ -14,14 +14,15 @@
 
         <div class="flex justify-center items-center float-right">
 
-            {{--            @can('create')--}}
+
+            @role('Wiring Contractor')
             <div class="flex justify-center items-center float-right">
                 <a href="{{ route('quota.create') }}"
                    class="flex items-center px-4 py-2 text-gray-600 bg-white border rounded-lg focus:outline-none hover:bg-gray-100 transition-colors duration-200 transform dark:text-gray-200 dark:border-gray-200  dark:hover:bg-gray-700 ml-2">
                     <span class="hidden md:inline-block ml-2">Apply New Quota</span>
                 </a>
             </div>
-            {{--            @endcan--}}
+            @endrole
 
             <a href="javascript:;" id="toggle"
                class="flex items-center px-4 py-2 text-gray-600 bg-white border rounded-lg focus:outline-none hover:bg-gray-100 transition-colors duration-200 transform dark:text-gray-200 dark:border-gray-200  dark:hover:bg-gray-700 ml-2"
@@ -56,27 +57,6 @@
                     </div>
 
 
-                    <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="phase_type_id">Phase Type</label>
-                        <select name="filter[phase_type_id]" id="phase_type_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                            <option value="">Select a phase</option>
-                            <option value="1">Domestic</option>
-                            <option value="2">Commercial</option>
-                            <option value="3">Industrial</option>
-                        </select>
-                    </div>
-
-
-                    <div>
-                        <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="type">Type</label>
-                        <select name="filter[type]" id="type" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                            <option value="">Select a phase</option>
-                            <option value="Credit">Credit</option>
-                            <option value="Debit">Debit</option>
-                        </select>
-                    </div>
-
-                    <div></div>
 
 
                     {{--                    <div>--}}

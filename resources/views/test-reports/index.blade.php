@@ -12,11 +12,12 @@
         </h2>
 
         <div class="flex justify-center items-center float-right">
-
+            @role('Wiring Contractor')
             <a href="{{ route('testReport.create') }}"
                class="flex items-center px-4 py-2 text-gray-600 bg-white border rounded-lg focus:outline-none hover:bg-gray-100 transition-colors duration-200 transform dark:text-gray-200 dark:border-gray-200 dark:bg-gray-700 dark:hover:text-black  dark:hover:bg-white ml-2">
                 Issue New Test Report
             </a>
+            @endrole
 
             <a href="javascript:;" id="toggle"
                class="flex items-center px-4 py-2 text-gray-600 bg-white border rounded-lg focus:outline-none hover:bg-gray-100 transition-colors duration-200 transform dark:text-gray-200 dark:border-gray-200  dark:hover:bg-gray-700 ml-2"
