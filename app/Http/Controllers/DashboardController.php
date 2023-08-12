@@ -25,14 +25,17 @@ class DashboardController extends Controller
 
             $sub_division_id = $user->division_sub_division_id;
             if (!empty($sub_division_id)) {
-                $sub_division_access = DivisionSubDivision::where('id', $sub_division_id)->pluck('id')->toArray();
+                if ($user->hasRole(['SDO'])) {
+                    $sub_division_access = DivisionSubDivision::where('id', $sub_division_id)->pluck('id')->toArray();
+                } elseif ($user->hasRole(['X-En'])) {
+                    $sub_division_access = DivisionSubDivision::where('division_code', DivisionSubDivision::find($sub_division_id)->division_code)->pluck('id')->toArray();
+                }
             }
             $approved_test_reports = TestReport::where('noc_issued', 1)->whereIn('division_sub_division_id', $sub_division_access)->count();
             $objection_test_reports = TestReport::where('status', 'Objection')->where('phase_id', 2)->whereIn('division_sub_division_id', $sub_division_access)->count();
             $seen_test_reports_1p = TestReport::where('status', 'Approved')->where('phase_id', 1)->whereIn('division_sub_division_id', $sub_division_access)->count();
 
             $pending_test_reports = TestReport::where('sdo_verified', 0)->where('xen_verified', 0)->where('phase_id', 2)->whereIn('division_sub_division_id', $sub_division_access)->count();
-
 
             $wiring_contractor_users = User::whereIn('division_sub_division_id', $sub_division_access)
                 ->role('Wiring Contractor')
@@ -55,7 +58,7 @@ class DashboardController extends Controller
             $seen_test_reports_1p = TestReport::where('status', 'Approved')->where('phase_id', 1)->whereIn('division_sub_division_id', $circle_access)->count();
 
 
-            return view('dashboard', compact('user', 'noc_issued', 'noc_objection', 'submit_to_electric_inspector',  'seen_test_reports_1p', 'pending_test_reports_approval'));
+            return view('dashboard', compact('user', 'noc_issued', 'noc_objection', 'submit_to_electric_inspector', 'seen_test_reports_1p', 'pending_test_reports_approval'));
 
 
         } elseif ($user->hasRole(['Electric Inspector'])) {
@@ -63,14 +66,14 @@ class DashboardController extends Controller
             $submit_to_electric_inspector = TestReport::where('dei_verified', 1)->where('aei_verified', 1)->where('ei_verified', 0)->where('phase_id', 2)->count();
             $noc_objection = TestReport::where('status', 'Objection')->count();
 
-            return view('dashboard', compact('user', 'noc_issued','submit_to_electric_inspector','noc_objection'));
+            return view('dashboard', compact('user', 'noc_issued', 'submit_to_electric_inspector', 'noc_objection'));
 
         } else {
             $noc_issued = TestReport::where('noc_issued', 1)->where('status', 'Approved')->count();
             $submit_to_electric_inspector = TestReport::where('dei_verified', 1)->where('aei_verified', 1)->where('ei_verified', 0)->where('phase_id', 2)->count();
             $noc_objection = TestReport::where('status', 'Objection')->count();
 
-            return view('dashboard', compact('user', 'noc_issued','submit_to_electric_inspector','noc_objection'));
+            return view('dashboard', compact('user', 'noc_issued', 'submit_to_electric_inspector', 'noc_objection'));
 
         }
 

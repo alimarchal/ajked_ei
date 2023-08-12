@@ -26,7 +26,6 @@ class TestReportController extends Controller
      */
     public function index()
     {
-
         $user = Auth::user();
         $testReportsQuery = QueryBuilder::for(TestReport::with('phase', 'divisionSubDivision', 'testReportSubmit', 'reviews'))
             ->allowedFilters([
@@ -51,8 +50,13 @@ class TestReportController extends Controller
         } elseif ($user->hasRole(['SDO', 'X-En'])) {
             $sub_division_id = $user->division_sub_division_id;
             if (!empty($sub_division_id)) {
-                $sub_division_access = DivisionSubDivision::where('id', $sub_division_id)->pluck('id')->toArray();
-                $test_reports = $testReportsQuery->whereIn('division_sub_division_id', $sub_division_access)->get();
+                if ($user->hasRole(['SDO'])) {
+                    $sub_division_access = DivisionSubDivision::where('id', $sub_division_id)->pluck('id')->toArray();
+                    $test_reports = $testReportsQuery->whereIn('division_sub_division_id', $sub_division_access)->get();
+                } elseif ($user->hasRole(['X-En'])) {
+                    $division_access = DivisionSubDivision::where('division_code', DivisionSubDivision::find($sub_division_id)->division_code)->pluck('id')->toArray();
+                    $test_reports = $testReportsQuery->whereIn('division_sub_division_id', $division_access)->get();
+                }
             }
         } elseif ($user->hasRole(['DEI', 'AEI'])) {
             $sub_division_id = $user->division_sub_division_id;
@@ -188,10 +192,9 @@ class TestReportController extends Controller
                 ]);
 
 
-
                 if ($test_report_quota_type === "Domestic") {
-                    $user->domestic =  $user->domestic - 1;
-                    $user->quota =  $user->quota - 1;
+                    $user->domestic = $user->domestic - 1;
+                    $user->quota = $user->quota - 1;
                     $user->save();
 
 
@@ -207,8 +210,8 @@ class TestReportController extends Controller
                     ]);
 
                 } elseif ($test_report_quota_type === "Commercial") {
-                    $user->commercial =  $user->commercial - 1;
-                    $user->quota =  $user->quota - 1;
+                    $user->commercial = $user->commercial - 1;
+                    $user->quota = $user->quota - 1;
                     $user->save();
 
 
@@ -224,8 +227,8 @@ class TestReportController extends Controller
                     ]);
 
                 } elseif ($test_report_quota_type === "Industrial") {
-                    $user->industrial =  $user->industrial - 1;
-                    $user->quota =  $user->quota - 1;
+                    $user->industrial = $user->industrial - 1;
+                    $user->quota = $user->quota - 1;
                     $user->save();
 
 
@@ -347,8 +350,8 @@ class TestReportController extends Controller
 
 
                 if ($test_report_quota_type === "Domestic") {
-                    $user->domestic =  $user->domestic - 1;
-                    $user->quota =  $user->quota - 1;
+                    $user->domestic = $user->domestic - 1;
+                    $user->quota = $user->quota - 1;
                     $user->save();
 
 
@@ -364,8 +367,8 @@ class TestReportController extends Controller
                     ]);
 
                 } elseif ($test_report_quota_type === "Commercial") {
-                    $user->commercial =  $user->commercial - 1;
-                    $user->quota =  $user->quota - 1;
+                    $user->commercial = $user->commercial - 1;
+                    $user->quota = $user->quota - 1;
                     $user->save();
 
 
@@ -381,8 +384,8 @@ class TestReportController extends Controller
                     ]);
 
                 } elseif ($test_report_quota_type === "Industrial") {
-                    $user->industrial =  $user->industrial - 1;
-                    $user->quota =  $user->quota - 1;
+                    $user->industrial = $user->industrial - 1;
+                    $user->quota = $user->quota - 1;
                     $user->save();
 
 
